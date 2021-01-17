@@ -6,6 +6,7 @@ class ExpandClass{
 
 	private const CLASSTYPE_BACKPACK="Backpack";
 	private const CLASSTYPE_UI="UI";
+	private const CLASSTYPE_MIDDLEWARE="Middleware";
 
     private $_classType;
 	private $_context;
@@ -20,6 +21,9 @@ class ExpandClass{
 		}
 		else if($classType==self::CLASSTYPE_UI){
 			$this->extendNamespace="mk2\ui_{className}\\";
+		}
+    	else if($classType==self::CLASSTYPE_MIDDLEWARE){
+			$this->extendNamespace="mk2\middleware_{className}\\";
 		}
     }
 
