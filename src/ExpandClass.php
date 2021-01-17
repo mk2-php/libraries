@@ -58,9 +58,14 @@ class ExpandClass{
 			}
 			$className2="\\".$namespace."\\".$className.$this->_classType;
 
+
 			if(!class_exists($className2)){
 				if($this->extendNamespace){
 					$className2=str_replace("{className}",strtolower($className),$this->extendNamespace).$className.$this->_classType;
+
+					if(!class_exists($className2)){
+						throw new \Exception("class '".$className2."' or '".$namespace."\\".$className.$this->_classType."' not found in");
+					}		
 				}
 			}
 
