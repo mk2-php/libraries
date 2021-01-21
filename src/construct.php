@@ -16,7 +16,7 @@ defineCheck('MK2_DEFNS_UI','app\UI');
 defineCheck('MK2_DEFNS_MODEL','app\Model');
 defineCheck('MK2_DEFNS_TABLE','app\Table');
 defineCheck('MK2_DEFNS_VALIDATOR','app\Validator');
-defineCheck('MK2_DEFNS_RENDER','app\Rendering\Render');
+defineCheck('MK2_DEFNS_RENDER','app\Render');
 defineCheck('MK2_DEFNS_SHELL','app\Shell');
 defineCheck('MK2_DEFNS_MIDDLEWARE','app\Middleware');
 defineCheck('MK2_DEFNS_ELCLASS','app\ElClass');

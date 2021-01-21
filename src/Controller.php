@@ -27,11 +27,15 @@ class Controller extends CoreBlock{
 	
 			$render=new $renderClassName();
 
+			$render->handleBefore();
+
 			if(!empty($this->UI)){
 				$render->UI=$this->UI;
 			}
 
 			$render->render($this);
+
+			$render->handleAfter();
 
 		}
 	}
