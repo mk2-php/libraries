@@ -27,7 +27,9 @@ class Controller extends CoreBlock{
 	
 			$render=new $renderClassName();
 
-			$render->handleBefore();
+			if(method_exists($render,"handleBefore")){
+				$render->handleBefore();
+			}
 
 			if(!empty($this->UI)){
 				$render->UI=$this->UI;
@@ -35,7 +37,9 @@ class Controller extends CoreBlock{
 
 			$render->render($this);
 
-			$render->handleAfter();
+			if(method_exists($render,"handleAfter")){
+				$render->handleAfter();
+			}
 
 		}
 	}
