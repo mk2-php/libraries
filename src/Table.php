@@ -33,7 +33,8 @@ class Table extends CoreBlock{
 		"incremented"=>true,
 	];
 
-	public $timeStamp=[
+	public $timeStamp=null;
+/*
 		"create"=>[
 			"field"=>"created",
 			"dateFormt"=>"Y/m/d H:i:s",
@@ -43,12 +44,16 @@ class Table extends CoreBlock{
 			"dateFormt"=>"Y/m/d H:i:s",
 		],
 	];
+*/
 
-	public $logicalDelete=[
-		"field"=>"del_flg",
+	public $logicalDelete=null;
+
+	/*
+	[
+		"field"=>"delete_flg",
 		"stampType"=>"1",
 	];
-/*
+
 	public $timeStampCreateKey="created";
 	public $timeStampUpdateKey="updated";
 
