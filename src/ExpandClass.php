@@ -91,4 +91,31 @@ class ExpandClass{
         
     }
 
+	/**
+	 * exists
+	 * @params $className 
+	 */
+	public function exists($className){
+
+		if(defined("MK2_DEFNS_".strtoupper($this->_classType))){
+			$namespace=constant("MK2_DEFNS_".strtoupper($this->_classType));
+		}
+		else{
+			$namespace=MK2_DEFNS."\\".$this->_classType;
+		}
+		$className2="\\".$namespace."\\".$className.$this->_classType;
+
+		if(class_exists($className2)){
+			return true;
+		}
+		
+		$className2=str_replace("{className}",strtolower($className),$this->extendNamespace).$className.$this->_classType;
+		
+		if(class_exists($className2)){
+			return true;
+		}
+
+		return false;
+
+	}
 }
