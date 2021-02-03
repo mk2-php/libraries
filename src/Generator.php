@@ -459,7 +459,12 @@ class Generator{
 	 * @param Exception $exception
 	 */
 	private function errorWeb($exception){
-		
+
+		if(empty($this->Routing)){
+			echo $exception;
+			return;
+		}
+
 		$errorRoute=$this->Routing->searchErrorClass($exception,$this->routeParam);
 
 		try{
