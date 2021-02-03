@@ -1,11 +1,29 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - Config
+ * 
+ * Initial setting class..
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Config{
 
 	private static $_data=null;
 
+	/**
+	 * set
+	 * @param $name = null
+	 * @param $value
+	 */
 	public static function set($name=null,$value){
 
 		if($name){
@@ -17,6 +35,11 @@ class Config{
 
 	}
 
+	/**
+	 * get
+	 * @param $name
+	 * @return $getData
+	 */
 	public static function get($name=null){
 
 		if(!$name){
@@ -40,7 +63,12 @@ class Config{
 		
 		return $getData;
 	}
-	
+
+	/**
+	 * exists
+	 * @param $name
+	 * @return boolean true/false
+	 */
 	public static function exists($name){
 		if(self::get($name)){
 			return true;
@@ -50,6 +78,11 @@ class Config{
 		}
 	}
 
+	/**
+	 * require
+	 * @param $pathName
+	 * @return require
+	 */
 	public static function require($pathName){
 		return require MK2_PATH_CONFIG."/".$pathName;
 	}

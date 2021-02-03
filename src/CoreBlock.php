@@ -1,9 +1,25 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - CoreBlock
+ * 
+ * Element class base object class.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class CoreBlock{
 
+	/**
+	 * __consturct
+	 */
 	public function __construct(){
 
 		$useClass=Config::get("config.useClass");
@@ -12,9 +28,11 @@ class CoreBlock{
 		}
 		
 		if(Config::exists("config.coreBlock.useRequest")){
+			// Load Reuqest Class
 			$this->Request=new Request();
 		}
 		if(Config::exists("config.coreBlock.useResponse")){
+			// Load Response Class
 			$this->Response=new Response($this);
 		}
 		if(php_sapi_name()=="cli"){
@@ -29,6 +47,11 @@ class CoreBlock{
 
 	}
 
+	/**
+	 * require
+	 * @param $path
+	 * @return string $path
+	 */
 	public function require($path){
 
 		$getData= ResponseData::get();
