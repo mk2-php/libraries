@@ -238,7 +238,7 @@ class Response{
 	 */
 	public function loadViewPart($viewPartName,$outputBufferd=false){
 
-		$viewPartPath=MK2_PATH_RENDERING_VIEWPART."/".$viewName.MK2_VIEW_EXTENSION;
+		$viewPartPath=MK2_PATH_RENDERING_VIEWPART."/".$viewPartName.MK2_VIEW_EXTENSION;
 
 		$viewPartPath=str_replace("\\","/",$viewPartPath);
 

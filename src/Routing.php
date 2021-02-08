@@ -316,18 +316,26 @@ class Routing{
 		$roots=explode("/",$root);
 		array_shift($roots);
 
+		$defaultRoute=Config::get("config.defaultRouting");
+
+		$rootParams["controller"]="main";
 		if(!empty($root[0])){
 			$rootParams["controller"]=$roots[0];
 		}
 		else{
-			$rootParams["controller"]="main";
+			if(!empty($defaultRoute["controller"])){
+				$rootParams["controller"]=$defaultRoute["controller"];
+			}
 		}
 
+		$rootParams["action"]="index";	
 		if(!empty($roots[1])){
 			$rootParams["action"]=$roots[1];
 		}
 		else{
-			$rootParams["action"]="index";	
+			if(!empty($defaultRoute["action"])){
+				$rootParams["action"]=$defaultRoute["action"];
+			}
 		}
 
 		return $rootParams;
