@@ -126,6 +126,10 @@ class Routing{
 		$phpself=dirname($_SERVER["PHP_SELF"]);
 		$requestUrl=$_SERVER["REQUEST_URI"];
 
+		if($phpself=="/"){
+			$phpself="";
+		}
+
 		$root=str_replace($phpself,"",$requestUrl);
 		$root=explode("?",$root);
 		$root=$root[0];
@@ -311,7 +315,14 @@ class Routing{
 		$root=$rootParams["root"];
 		$roots=explode("/",$root);
 		array_shift($roots);
-		$rootParams["controller"]=$roots[0];
+
+		if(!empty($root[0])){
+			$rootParams["controller"]=$roots[0];
+		}
+		else{
+			$rootParams["controller"]="main";
+		}
+
 		if(!empty($roots[1])){
 			$rootParams["action"]=$roots[1];
 		}

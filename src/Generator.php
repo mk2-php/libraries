@@ -98,6 +98,9 @@ class Generator{
 	private function autoLoad(){
 
 		spl_autoload_register(function($className){
+			if(count(explode("\\",$className))>1){
+				$className=lcfirst($className);
+			}
 			$classPath=MK2_ROOT."/".str_replace("\\","/",$className).".php";
 			if(file_exists($classPath)){
 				require_once $classPath;
