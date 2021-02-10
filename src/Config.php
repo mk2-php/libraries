@@ -84,6 +84,8 @@ class Config{
 	 * @return require
 	 */
 	public static function require($pathName){
-		return require MK2_PATH_CONFIG."/".$pathName;
+		if(file_exists(MK2_PATH_CONFIG."/".$pathName)){
+			return require MK2_PATH_CONFIG."/".$pathName;
+		}
 	}
 }

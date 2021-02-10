@@ -1,15 +1,15 @@
 <?php
-
 /**
- * |--------------------------------------------------------------
- * | Mark2 [PHP Framework]
- * |
- * | Generator
- * |
- * | @copylight Nakajima Satoru
- * | @url https://www.mk2-php.com/
- * |
- * |--------------------------------------------------------------
+ * ===================================================
+ * 
+ * [Mark2] - Generator
+ * 
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
  */
 
 namespace Mk2\Libraries;

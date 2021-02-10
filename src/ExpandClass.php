@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - ExpandClass
+ * 
+ * Element class Management object class,
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class ExpandClass{
@@ -12,6 +25,11 @@ class ExpandClass{
 	private $_context;
 	private $extendNamespace;
     
+	/**
+	 * __construct
+	 * @param $classType
+	 * @param &$context
+	 */
     public function __construct($classType,&$context){
         $this->_classType=$classType;
 		$this->_context=$context;
