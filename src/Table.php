@@ -200,7 +200,7 @@ class Table extends CoreBlock{
 
 	/**
 	 * select
-	 * @param array $params
+	 * @param array $params = null
 	 */
 	public function select($params=null){	
 
@@ -216,7 +216,7 @@ class Table extends CoreBlock{
 
 	/**
 	 * show
-	 * @param array $params
+	 * @param array $params = null
 	 */
 	public function show($params=null){	
 
@@ -232,16 +232,18 @@ class Table extends CoreBlock{
 
 	/**
 	 * save
-	 * @param array $params
+	 * @param array $params = null
+	 * @param array $responsed = false
+	 * @param array $changeOnlyRewrite = false
 	 */
-	public function save($params=null){
+	public function save($params=null,$responsed=false,$changeOnlyRewrite=false){
 
 		if($this->ormType==self::ORMTYPE_ELOQUENT){
 			
 		}
 		else if($this->ormType==self::ORMTYPE_MK2ORM){
 			$this->_ormDataSet();
-			return $this->mk2Orm->save($params);
+			return $this->mk2Orm->save($params,$responsed,$changeOnlyRewrite);
 		}
 
 	}
@@ -249,15 +251,16 @@ class Table extends CoreBlock{
 	/**
 	 * insert
 	 * @param array $params
+	 * @param boolean $insertResponsed = false
 	 */
-	public function insert($params=null){
+	public function insert($params=null,$insertResponsed=false){
 
 		if($this->ormType==self::ORMTYPE_ELOQUENT){
 			
 		}
 		else if($this->ormType==self::ORMTYPE_MK2ORM){
 			$this->_ormDataSet();
-			return $this->mk2Orm->insert($params);
+			return $this->mk2Orm->insert($params,$insertResponsed);
 		}
 
 	}
@@ -265,15 +268,17 @@ class Table extends CoreBlock{
 	/**
 	 * update
 	 * @param array $params
+	 * @param boolean $updateResponsed = false
+	 * @param boolean $changeOnlyRewrite = false
 	 */
-	public function update($params=null){
+	public function update($params,$updateResponsed=false,$changeOnlyRewrite=false){
 
 		if($this->ormType==self::ORMTYPE_ELOQUENT){
 			
 		}
 		else if($this->ormType==self::ORMTYPE_MK2ORM){
 			$this->_ormDataSet();
-			return $this->mk2Orm->update($params);
+			return $this->mk2Orm->update($params,$updateResponsed,$changeOnlyRewrite);
 		}
 
 	}
@@ -281,22 +286,23 @@ class Table extends CoreBlock{
 	/**
 	 * delete
 	 * @param array $params
+	 * @param boolean $deleteResponsed = false
 	 */
-	public function delete($params=null){
+	public function delete($params=null,$deleteResponsed=false){
 
 		if($this->ormType==self::ORMTYPE_ELOQUENT){
 			
 		}
 		else if($this->ormType==self::ORMTYPE_MK2ORM){
 			$this->_ormDataSet();
-			return $this->mk2Orm->delete($params);
+			return $this->mk2Orm->delete($params,$deleteResponsed);
 		}
 
 	}
 
 	/**
 	 * migration
-	 * @param array $params
+	 * @param array $params = null
 	 */
 	public function migration($params=null){
 
@@ -312,7 +318,7 @@ class Table extends CoreBlock{
 
 	/**
 	 * transaction
-	 * @param array $params
+	 * @param array $params = null
 	 */
 	public function transaction($params=null){
 
