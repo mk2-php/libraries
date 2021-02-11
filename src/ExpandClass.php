@@ -136,4 +136,29 @@ class ExpandClass{
 		return false;
 
 	}
+
+	/**
+	 * my
+	 */
+	public function my(){
+
+		if(class_exists("Mk2\Libraries\\".$this->_classType)){
+			$namespace="Mk2\Libraries";
+		}
+		else{
+			$namespace="\\".MK2_DEFNS."\\".$this->_classType;
+		}
+
+		$className=$namespace."\\".$this->_classType;
+
+		$classObject=new $className();
+
+		$classObject->__parent=$this->_context;
+
+		if(\method_exists($classObject,"handleBefore")){
+			$classObject->handleBefore();
+		}
+
+		return $classObject;
+	}
 }
