@@ -271,6 +271,9 @@ class Routing{
 				if(!empty($passParams[$url])){
 					$confirmPassParams=$passParams[$url];
 				}
+				else{
+					$confirmPassParams=null;
+				}
 			}
 		}
 
