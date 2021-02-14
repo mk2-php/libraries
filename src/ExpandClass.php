@@ -110,10 +110,11 @@ class ExpandClass{
     }
 
 	/**
-	 * exists
-	 * @params $className 
+	 * getFullClassName
+	 * @param $className
 	 */
-	public function exists($className){
+	public function getFullClassName($className){
+
 
 		if(defined("MK2_DEFNS_".strtoupper($this->_classType))){
 			$namespace=constant("MK2_DEFNS_".strtoupper($this->_classType));
@@ -130,11 +131,52 @@ class ExpandClass{
 		$className2=str_replace("{className}",strtolower($className),$this->extendNamespace).$className.$this->_classType;
 		
 		if(class_exists($className2)){
+			return $className2;
+		}
+
+	}
+
+	/**
+	 * exists
+	 * @params $className 
+	 */
+	public function exists($className){
+
+		$exists=$this->getFullClassName($className);
+		if($exists){
 			return true;
 		}
 
 		return false;
+	}
 
+	/**
+	 * clsssName
+	 * @param $className
+	 */
+	public function get($className,$option=null){
+
+		$fullClassName=$this->getFullClassName($className);
+
+		if(!$fullClassName){
+			return;
+		}
+
+		$classObject=new $fullClassName();
+
+		$classObject->__parent=$this->_context;
+
+		if($option){
+			foreach($option as $field=>$value){
+				$classObject->{$field}=$value;
+			}
+		}
+
+		if(\method_exists($classObject,"handleBefore")){
+			$classObject->handleBefore();
+		}
+
+		return $classObject;
 	}
 
 	/**
