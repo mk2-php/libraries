@@ -45,13 +45,13 @@ class Generator{
 			$this->setRouting();
 
 			// load middleware before
-			$this->loadMiddlewareBefore();
+			//$this->loadMiddlewareBefore();
 
 			// set Controller/Shell
 			$this->setControllerOrShell();
 
 			// load middleware after
-			$this->loadMiddlewareAfter();
+			//$this->loadMiddlewareAfter();
 
 		}catch(Exception $e){
 			$this->error($e);
@@ -269,6 +269,8 @@ class Generator{
 			}
 		}
 
+		$response=[];
+
 		// load middleware (local)
 		if(!empty($this->routeParam["middleware"])){
 			foreach($this->routeParam["middleware"] as $m_){
@@ -282,24 +284,27 @@ class Generator{
 				$mbuff=new $middlewareName;
 
 				if(method_exists($mbuff,"handleBefore")){
-					$mbuff->handleBefore();
+					$buffer = $mbuff->handleBefore();
+					$response[$m_]=$buffer;
 				}
 
 				$this->middlewares[]=$mbuff;
 			}
 		}
 
+		return $response;
 	}
 
 	/**
 	 * loadMiddlewareAfter
+	 * @param $input
 	 */
-	private function loadMiddlewareAfter(){
+	private function loadMiddlewareAfter($input){
 
 		if(!empty($this->middlewares)){
 			foreach($this->middlewares as $m_){
 				if(method_exists($m_,"handleAfter")){
-					$m_->handleAfter();
+					$m_->handleAfter($input);
 				}
 			}
 		}
@@ -335,8 +340,14 @@ class Generator{
 			throw new \Exception('"'.$action.'" action does not exist in "'.$controllerName.'" class.');
 		}
 
+		// middleware before action...
+		$middlewareResponse = $this->loadMiddlewareBefore();
+		if($middlewareResponse){
+			$controller->middlewareResponse=$middlewareResponse;
+		}
+
 		if(method_exists($controller,"handleBefore")){
-			echo $controller->handleBefore();
+			$controller->beforeResponse = $controller->handleBefore();
 		}
 
 		if(!empty($this->routeParam["request"])){
@@ -346,15 +357,19 @@ class Generator{
 			$output=$controller->{$action}();
 		}
 
-		echo $output;
-
 		if(!empty($controller->autoRender)){
 			$controller->_rendering();
 		}
 
 		if(method_exists($controller,"handleAfter")){
-			echo $controller->handleAfter();
+			$buff=$controller->handleAfter($output);
+			if($buff){
+				$output=$buff;
+			}
 		}
+
+		// middleware after action..
+		$this->loadMiddlewareAfter($output);
 
 	}
 
