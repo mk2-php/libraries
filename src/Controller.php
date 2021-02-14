@@ -59,4 +59,8 @@ class Controller extends CoreBlock{
 
 		}
 	}
+
+	public function handleBefore(){}
+	public function handleAfter($output){}
+	
 }
