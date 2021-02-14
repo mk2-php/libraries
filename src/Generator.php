@@ -174,10 +174,14 @@ class Generator{
 
 		$argv=$_SERVER["argv"];
 		array_shift($argv);
+		if(empty($argv[0])){
+			$argv[0]="top";
+		}
 		$mainCommands=explode(":",$argv[0]);
 		$mainCommand=$mainCommands[0];
 		if($mainCommand!="command"){
-			echo "空です";
+			require "mk2shell.php";
+			new Mk2shell($argv);
 			exit;
 		}
 
