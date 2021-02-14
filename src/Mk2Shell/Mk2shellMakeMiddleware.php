@@ -81,7 +81,7 @@ class Mk2shellMakeMiddleware extends Command{
        $str.="\n";
        if(!$data["extends"]){
            $str.="use Mk2\Libraries\Middleware;\n";
-           $data["extends"]="Middleware";
+           $data["extends"]="";
            $str.="\n";
        }
        $str.="class ".ucfirst($data["name"])."Middleware extends ".ucfirst($data["extends"])."Middleware\n";

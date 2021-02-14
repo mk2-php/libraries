@@ -180,7 +180,7 @@ class Generator{
 		$mainCommands=explode(":",$argv[0]);
 		$mainCommand=$mainCommands[0];
 		if($mainCommand!="command"){
-			require "mk2shell.php";
+			require "Mk2Shell/Mk2shell.php";
 			new Mk2shell($argv);
 			exit;
 		}

@@ -17,22 +17,22 @@ class Mk2shellMakeController extends Command{
         else{
             $buff="";
             for(;;){
-                $buff=$this->input("[Q] Enter the name of the controller to create.");
+                $buff=$this->input("\t- Enter the name of the controller to create.");
                 if($buff){
                     break;
                 }
-                $this->text("[ERROR] The Controller name has not been entered.");
+                $this->red("\t  [ERROR] The Controller name has not been entered.");
             }
             $input["name"]=$buff;
         }
 
-        $input["extends"]=$this->input("[Q] If there is an inheritance source Controller name, enter it.");
+        $input["extends"]=$this->input("\t- If there is an inheritance source Controller name, enter it.");
 
-        $juge=strtolower($this->input("[Q] Do you want to add an action?[Y/n]"));
+        $juge=strtolower($this->input("\t- Do you want to add an action?[Y/n]"));
         if($juge!="y"){ $juge="n"; }
 
+        $input["actions"]=[];
         if($juge=="y"){
-            $input["actions"]=[];
 
             $looped=false;
             for(;;){
@@ -40,17 +40,17 @@ class Mk2shellMakeController extends Command{
                 $buff=[];
 
                 for(;;){
-                    $name=$this->input(" L [Q] Please enter the action name.");
+                    $name=$this->input("\t\t- Please enter the action name.");
                     if($name){
                         $buff["name"]=$name;
                         break;
                     }
-                    $this->text("[ERROR] The action name has not been entered.");
+                    $this->red("\t\t  [ERROR] The action name has not been entered.");
                 }
 
-                $buff["aregment"]=$name=$this->input(' L [Q] If there is an argument name, enter it with.("," Separation)');
+                $buff["aregment"]=$name=$this->input('\t\t- If there is an argument name, enter it with.("," Separation)');
                 
-                $juge=strtolower($this->input(" L [Q] Do you want to continue adding actions?[Y/n]"));
+                $juge=strtolower($this->input("\t\t\- Do you want to continue adding actions?[Y/n]"));
                 if($juge!="y"){ $juge="n"; }
     
                 $input["actions"][]=$buff;
@@ -62,10 +62,47 @@ class Mk2shellMakeController extends Command{
             }
         }
 
-        $this->text("===========================================================================");
+        $juge=strtolower($this->input("\t- Do you want to set options?[Y/n]"));
+        if($juge!="y"){ $juge="n"; }
+
+        $buff=[];
+
+        if($juge=="y"){
+            $buff["template"]=$this->input("\t\t- Enter template name if available.");
+
+            $juge=strtolower($this->input("\t\t- Do you want to apply autoRender?[y/n]"));
+            if($juge!="y"){ $juge="n"; }
+            $buff["autoRender"]=$juge;
+            
+            $juge=$this->input("\t\t- Do you want to set up a handleBefore?[y/n]");
+            if($juge!="y"){ $juge="n"; }
+            $buff["onHandleBefore"]=$juge;
+
+            $juge=$this->input("\t\t- Do you want to set up a handleAfter?[y/n]");
+            if($juge!="y"){ $juge="n"; }
+            $buff["onHandleAfter"]=$juge;
+
+            $buff["loadModel"]=$this->input('\t\t- If there is a model to be used in common, please enter it.("," Separation).');
+            $buff["loadBackpack"]=$this->input('\t\t- If there is a Backpack to be used in common, please enter it.("," Separation).');
+            $buff["loadUI"]=$this->input('\t\t- If there is a UI to be used in common, please enter it.("," Separation).');
+
+            if(
+                $buff["loadModel"] || 
+                $buff["loadBackpack"] || 
+                $buff["loadUI"]
+            ){
+                $this->yellow("\t\t: Since one of Model, Backpack, UI is specified, handleBefore is installed.");
+                $buff["onHandleBefore"]="y";
+            }
+
+        }
+
+        $input["option"]=$buff;
+
+        $this->text("\t===========================================================================");
 
         $this->text("");
-        $juge=strtolower($this->input("[Create a Controller file based on the entered information. Is it OK?[Y/n]"));
+        $juge=strtolower($this->input("\t- Create a Controller file based on the entered information. Is it OK?[Y/n]"));
         
         if($juge=="n"){
             $this->text("");
@@ -105,13 +142,29 @@ class Mk2shellMakeController extends Command{
         $str.="namespace App\Controller;\n";
         $str.="\n";
         if(!$data["extends"]){
-            $str.="use Mk2\Libraries\Controller;";
-            $data["extends"]="Controller";
+            $str.="use Mk2\Libraries\Controller;\n";
+            $data["extends"]="";
             $str.="\n";
         }
         $str.="class ".ucfirst($data["name"])."Controller extends ".ucfirst($data["extends"])."Controller\n";
         $str.="{\n";
         
+        if($data["option"]){
+
+            $str.="\n";
+            $opt=$data["option"];
+
+            if($opt["template"]){
+                $str.="\tpublic \$Template = '".$opt["template"]."';\n\n";
+            }
+
+            if($opt["autoRender"]=="y"){
+                $str.="\tpublic \$autoRender = true;\n\n";
+            }
+
+
+
+        }
 
         if($data["actions"]){
             foreach($data["actions"] as $a_){
