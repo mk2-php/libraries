@@ -48,7 +48,7 @@ class Mk2shellMakeController extends Command{
                     $this->red("\t\t  [ERROR] The action name has not been entered.");
                 }
 
-                $buff["aregment"]=$name=$this->input('\t\t- If there is an argument name, enter it with.("," Separation)');
+                $buff["aregment"]=$name=$this->input("\t\t- If there is an argument name, enter it with.(\",\" Separation)");
                 
                 $juge=strtolower($this->input("\t\t\- Do you want to continue adding actions?[Y/n]"));
                 if($juge!="y"){ $juge="n"; }
@@ -82,9 +82,9 @@ class Mk2shellMakeController extends Command{
             if($juge!="y"){ $juge="n"; }
             $buff["onHandleAfter"]=$juge;
 
-            $buff["loadModel"]=$this->input('\t\t- If there is a model to be used in common, please enter it.("," Separation).');
-            $buff["loadBackpack"]=$this->input('\t\t- If there is a Backpack to be used in common, please enter it.("," Separation).');
-            $buff["loadUI"]=$this->input('\t\t- If there is a UI to be used in common, please enter it.("," Separation).');
+            $buff["loadModel"]=$this->input("\t\t- If there is a model to be used in common, please enter it.(\",\" Separation).");
+            $buff["loadBackpack"]=$this->input("\t\t- If there is a Backpack to be used in common, please enter it.(\",\" Separation).");
+            $buff["loadUI"]=$this->input("\t\t- If there is a UI to be used in common, please enter it.(\",\" Separation).");
 
             if(
                 $buff["loadModel"] || 
@@ -111,7 +111,14 @@ class Mk2shellMakeController extends Command{
             return;
         }
 
-        $this->_make($input);
+        $juge=$this->_make($input);
+
+        if(!$juge){
+            $this->text("");
+            $this->text("");
+            $this->text("Controller creation has been canceled,");
+            return;
+        }
 
         $this->text("");
         $this->text("");
@@ -155,14 +162,69 @@ class Mk2shellMakeController extends Command{
             $opt=$data["option"];
 
             if($opt["template"]){
+                $str.="\t// Set Template Name.\n";
                 $str.="\tpublic \$Template = '".$opt["template"]."';\n\n";
             }
 
             if($opt["autoRender"]=="y"){
+                $str.="\t// auto Render Enable.\n";
                 $str.="\tpublic \$autoRender = true;\n\n";
             }
 
+            if($opt["onHandleBefore"]){
+                $str.="\t/**\n";
+                $str.="\t * handleBefore\n";
+                $str.="\t */\n";
+                $str.="\tpublic function handleBefore()\n";
+                $str.="\t{\n";
+                $str.="\n";
 
+                if($opt["loadModel"]){
+                    $models=explode(",",$opt["loadModel"]);
+
+                    $str.="\t\t// load Model\n";
+                    $str.="\t\t\$this->Model->load([\n";
+                    foreach($models as $m_){
+                        $str.="\t\t\t\"".ucfirst($m_)."\",\n";
+                    }
+                    $str.="\t\t]);\n\n";
+                }
+
+                if($opt["loadBackpack"]){
+                    $backpacks=explode(",",$opt["loadBackpack"]);
+                    $str.="\t\t// load Backpack\n";
+                    $str.="\t\t\$this->Backpack->load([\n";
+                    foreach($backpacks as $b_){
+                        $str.="\t\t\t\"".ucfirst($b_)."\",\n";
+                    }
+                    $str.="\t\t]);\n\n";
+                }
+
+                if($opt["loadUI"]){
+                    $uis=explode(",",$opt["loadUI"]);
+                    $str.="\t\t// load UI\n";
+                    $str.="\t\t\$this->UI->load([\n";
+                    foreach($uis as $u_){
+                        $str.="\t\t\t\"".ucfirst($u_)."\",\n";
+                    }
+                    $str.="\t\t]);\n\n";
+                }
+
+
+
+                $str.="\t}\n\n";
+            }
+
+            if($opt["onHandleAfter"]){
+                $str.="\t/**\n";
+                $str.="\t * handleAfter\n";
+                $str.="\t * @param \$input \n";                
+                $str.="\t */\n";
+                $str.="\tpublic function handleAfter(\$input)\n";
+                $str.="\t{\n";
+                $str.="\n";
+                $str.="\t}\n\n";
+            }
 
         }
 
@@ -200,7 +262,18 @@ class Mk2shellMakeController extends Command{
 
         $fileName=MK2_ROOT."/".MK2_DEFNS_CONTROLLER."/".ucfirst($data["name"])."Controller.php";
         $fileName=str_replace("\\","/",$fileName);
+
+        if(file_exists($fileName)){
+            $juge=strtolower($this->input("\tThe same Controller already exists, do you want to overwrite it as it is?[y/n]"));
+            if($juge!="y"){ $juge="n"; }
+
+            if($juge=="n"){
+                return false;
+            }
+        }
+
         file_put_contents($fileName,$str);
 
+        return true;
     }
 }

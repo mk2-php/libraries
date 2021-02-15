@@ -4,6 +4,7 @@ namespace Mk2\Libraries;
 
 class Mk2shellMakeModel extends Command{
 
+
     public function __construct($argv){
 
         $input=[];
@@ -17,23 +18,21 @@ class Mk2shellMakeModel extends Command{
         else{
             $buff="";
             for(;;){
-                $buff=$this->input("[Q] Enter the name of the Model to create.");
+                $buff=$this->input("\t- Enter the name of the Model to create.");
                 if($buff){
                     break;
                 }
-                $this->text("[ERROR] The Model name has not been entered.");
+                $this->red("\t  [ERROR] The Model name has not been entered.");
             }
             $input["name"]=$buff;
         }
-        
-        $input["extends"]=$this->input("[Q] If there is an inheritance source Model name, enter it.");
 
-        
-        $juge=strtolower($this->input("[Q] Do you want to add an public method?[Y/n]"));
+        $input["extends"]=$this->input("\t- If there is an inheritance source Model name, enter it.");
+
+        $juge=strtolower($this->input("\t- Do you want to add an public method?[Y/n]"));
         if($juge!="y"){ $juge="n"; }
 
         $input["methods"]=[];
-
         if($juge=="y"){
 
             $looped=false;
@@ -42,17 +41,17 @@ class Mk2shellMakeModel extends Command{
                 $buff=[];
 
                 for(;;){
-                    $name=$this->input(" L [Q] Please enter the method name.");
+                    $name=$this->input("\t\t- Please enter the method name.");
                     if($name){
                         $buff["name"]=$name;
                         break;
                     }
-                    $this->text("[ERROR] The method name has not been entered.");
+                    $this->red("\t\t  [ERROR] The method name has not been entered.");
                 }
 
-                $buff["aregment"]=$name=$this->input(' L [Q] If there is an argument name, enter it with.("," Separation)');
+                $buff["aregment"]=$name=$this->input("\t\t- If there is an argument name, enter it with.(\",\" Separation)");
                 
-                $juge=strtolower($this->input(" L [Q] Do you want to continue adding methods?[Y/n]"));
+                $juge=strtolower($this->input("\t\t\- Do you want to continue adding method?[Y/n]"));
                 if($juge!="y"){ $juge="n"; }
     
                 $input["methods"][]=$buff;
@@ -64,10 +63,42 @@ class Mk2shellMakeModel extends Command{
             }
         }
 
-        $this->text("===========================================================================");
+        $juge=strtolower($this->input("\t- Do you want to set options?[Y/n]"));
+        if($juge!="y"){ $juge="n"; }
+
+        $buff=[];
+
+        if($juge=="y"){
+            
+            $juge=$this->input("\t\t- Do you want to set up a handleBefore?[y/n]");
+            if($juge!="y"){ $juge="n"; }
+            $buff["onHandleBefore"]=$juge;
+
+            $juge=$this->input("\t\t- Do you want to set up a handleAfter?[y/n]");
+            if($juge!="y"){ $juge="n"; }
+            $buff["onHandleAfter"]=$juge;
+
+            $buff["loadModel"]=$this->input("\t\t- If there is a model to be used in common, please enter it.(\",\" Separation).");
+            $buff["loadBackpack"]=$this->input("\t\t- If there is a Backpack to be used in common, please enter it.(\",\" Separation).");
+            $buff["loadUI"]=$this->input("\t\t- If there is a UI to be used in common, please enter it.(\",\" Separation).");
+
+            if(
+                $buff["loadModel"] || 
+                $buff["loadBackpack"] || 
+                $buff["loadUI"]
+            ){
+                $this->yellow("\t\t: Since one of Model, Backpack, UI is specified, handleBefore is installed.");
+                $buff["onHandleBefore"]="y";
+            }
+
+        }
+
+        $input["option"]=$buff;
+
+        $this->text("\t===========================================================================");
 
         $this->text("");
-        $juge=strtolower($this->input("[Create a Model file based on the entered information. Is it OK?[Y/n]"));
+        $juge=strtolower($this->input("\t- Create a Model file based on the entered information. Is it OK?[Y/n]"));
         
         if($juge=="n"){
             $this->text("");
@@ -76,15 +107,21 @@ class Mk2shellMakeModel extends Command{
             return;
         }
 
-        $this->_make($input);
+        $juge=$this->_make($input);
+
+        if(!$juge){
+            $this->text("");
+            $this->text("");
+            $this->text("Model creation has been canceled,");
+            return;
+        }
 
         $this->text("");
         $this->text("");
         $this->green("Model creation completed.");
-
+        
     }
 
-    
     /**
      * _make
      * @param $data
@@ -115,6 +152,67 @@ class Mk2shellMakeModel extends Command{
         $str.="class ".ucfirst($data["name"])."Model extends ".ucfirst($data["extends"])."Model\n";
         $str.="{\n";
         
+        if($data["option"]){
+
+            $str.="\n";
+            $opt=$data["option"];
+
+            if($opt["onHandleBefore"]){
+                $str.="\t/**\n";
+                $str.="\t * handleBefore\n";
+                $str.="\t */\n";
+                $str.="\tpublic function handleBefore()\n";
+                $str.="\t{\n";
+                $str.="\n";
+
+                if($opt["loadModel"]){
+                    $models=explode(",",$opt["loadModel"]);
+
+                    $str.="\t\t// load Model\n";
+                    $str.="\t\t\$this->Model->load([\n";
+                    foreach($models as $m_){
+                        $str.="\t\t\t\"".ucfirst($m_)."\",\n";
+                    }
+                    $str.="\t\t]);\n\n";
+                }
+
+                if($opt["loadBackpack"]){
+                    $backpacks=explode(",",$opt["loadBackpack"]);
+                    $str.="\t\t// load Backpack\n";
+                    $str.="\t\t\$this->Backpack->load([\n";
+                    foreach($backpacks as $b_){
+                        $str.="\t\t\t\"".ucfirst($b_)."\",\n";
+                    }
+                    $str.="\t\t]);\n\n";
+                }
+
+                if($opt["loadUI"]){
+                    $uis=explode(",",$opt["loadUI"]);
+                    $str.="\t\t// load UI\n";
+                    $str.="\t\t\$this->UI->load([\n";
+                    foreach($uis as $u_){
+                        $str.="\t\t\t\"".ucfirst($u_)."\",\n";
+                    }
+                    $str.="\t\t]);\n\n";
+                }
+
+
+
+                $str.="\t}\n\n";
+            }
+
+            if($opt["onHandleAfter"]){
+                $str.="\t/**\n";
+                $str.="\t * handleAfter\n";
+                $str.="\t * @param \$input \n";
+                $str.="\t */\n";
+                $str.="\tpublic function handleAfter(\$input)\n";
+                $str.="\t{\n";
+                $str.="\n";
+                $str.="\t}\n\n";
+            }
+
+        }
 
         if($data["methods"]){
             foreach($data["methods"] as $a_){
@@ -150,7 +248,18 @@ class Mk2shellMakeModel extends Command{
 
         $fileName=MK2_ROOT."/".MK2_DEFNS_MODEL."/".ucfirst($data["name"])."Model.php";
         $fileName=str_replace("\\","/",$fileName);
+
+        if(file_exists($fileName)){
+            $juge=strtolower($this->input("\tThe same Model already exists, do you want to overwrite it as it is?[y/n]"));
+            if($juge!="y"){ $juge="n"; }
+
+            if($juge=="n"){
+                return false;
+            }
+        }
+
         file_put_contents($fileName,$str);
 
+        return true;
     }
 }
