@@ -17,30 +17,116 @@ class Mk2shellMakeTable extends Command{
         else{
             $buff="";
             for(;;){
-                $buff=$this->input("[Q] Enter the name of the Table to create.");
+                $buff=$this->input("\t- Enter the name of the Table to create.");
                 if($buff){
                     break;
                 }
-                $this->text("[ERROR] The Table name has not been entered.");
+                $this->red("\t  [ERROR] The Table name has not been entered.");
             }
             $input["name"]=$buff;
         }
-        
-        $input["extends"]=$this->input("[Q] If there is an inheritance source Table name, enter it.");
 
-        $juge=strtolower($this->input("[Q] Do you want to set options??[Y/n]"));
+        $input["extends"]=$this->input("\t- If there is an inheritance source Table name, enter it.");
+/*
+        $juge=strtolower($this->input("\t- Do you want to add an public method?[Y/n]"));
         if($juge!="y"){ $juge="n"; }
 
-        $input["option"]=[];
+        $input["methods"]=[];
+        if($juge=="y"){
+
+            $looped=false;
+            for(;;){
+    
+                $buff=[];
+
+                for(;;){
+                    $name=$this->input("\t\t- Please enter the method name.");
+                    if($name){
+                        $buff["name"]=$name;
+                        break;
+                    }
+                    $this->red("\t\t  [ERROR] The method name has not been entered.");
+                }
+
+                $buff["aregment"]=$name=$this->input("\t\t- If there is an argument name, enter it with.(\",\" Separation)");
+                
+                $juge=strtolower($this->input("\t\t\- Do you want to continue adding method?[Y/n]"));
+                if($juge!="y"){ $juge="n"; }
+    
+                $input["methods"][]=$buff;
+
+                if($juge=="n"){
+                    break;
+                }
+            
+            }
+        }
+*/
+        $juge=strtolower($this->input("\t- Do you want to set options?[Y/n]"));
+        if($juge!="y"){ $juge="n"; }
+
+        $buff=[];
 
         if($juge=="y"){
 
+            $buff["dbName"]=$this->input("\t\t- If you want to change the database connection destination name, enter the change s meeting.");
+
+            $buff["table"]=$this->input("\t\t- Enter if you want to set the table name manually.");
+            
+            $juge=$this->input("\t\t- Do you want to set a time stamp?[y/n]");
+            if($juge!="y"){ $juge="n"; }
+            
+            if($juge=="y"){
+
+                $buff["timeStamp"]=[];
+
+                for(;;){
+                    $juge=$this->input("\t\t\t- Enter the column name of the record creation date.");
+
+                    if($juge){
+                        $buff["timeStamp"]["created"]=$juge;
+                        break;
+                    }
+                    $this->red("\t\t\t- The column name of the record creation date has not been entered.");
+                }
+
+                for(;;){
+                    $juge=$this->input("\t\t\t- Enter the column name of the record update date.");
+
+                    if($juge){
+                        $buff["timeStamp"]["updated"]=$juge;
+                        break;
+                    }
+                    $this->red("\t\t\t- The column name of the record update date has not been entered.");
+                }
+
+            }
+
+            $juge=$this->input("\t\t- Do you want to set up a logical delete?[y/n]");
+            if($juge!="y"){ $juge="n"; }
+
+            if($juge=="y"){
+
+                for(;;){
+                    $juge=$this->input("\t\t\t- Enter the column name for ethical deletion.");
+
+                    if($juge){
+                        $buff["logicalDelete"]=$juge;
+                        break;
+                    }
+                    $this->red("\t\t\t- The column name for deleting ethics has not been entered.");
+                }
+
+            }
+
         }
 
-        $this->text("===========================================================================");
+        $input["option"]=$buff;
+
+        $this->text("\t===========================================================================");
 
         $this->text("");
-        $juge=strtolower($this->input("[Create a Table file based on the entered information. Is it OK?[Y/n]"));
+        $juge=strtolower($this->input("\t- Create a Table file based on the entered information. Is it OK?[Y/n]"));
         
         if($juge=="n"){
             $this->text("");
@@ -49,14 +135,21 @@ class Mk2shellMakeTable extends Command{
             return;
         }
 
-        $this->_make($input);
+        $juge=$this->_make($input);
+
+        if(!$juge){
+            $this->text("");
+            $this->text("");
+            $this->text("Table creation has been canceled,");
+            return;
+        }
 
         $this->text("");
         $this->text("");
         $this->green("Table creation completed.");
+        
     }
 
-    
     /**
      * _make
      * @param $data
@@ -87,42 +180,73 @@ class Mk2shellMakeTable extends Command{
         $str.="class ".ucfirst($data["name"])."Table extends ".ucfirst($data["extends"])."Table\n";
         $str.="{\n";
         
-        /*
-        if($data["methods"]){
-            foreach($data["methods"] as $a_){
-                
-                $argStr="";
-                $argComment="";
-                if($a_["aregment"]){
-                    $aregments=explode(",",$a_["aregment"]);
-                    foreach($aregments as $ind=>$ag_){
-                        if($ind>0){
-                            $argStr.=", ";
-                        }
-                        $argStr.="$".$ag_;
-                        $argComment.="\t * @param ".$ag_."\n";
-                    }
-                }
-                
+        if($data["option"]){
 
+            $str.="\n";
+            $opt=$data["option"];
+
+
+            if($opt["dbName"]){
+
+                $str.="\tpublic \$dbName = '".$opt["dbName"]."';\n";
                 $str.="\n";
-                $str.="\t/**\n";
-                $str.="\t * ".$a_["name"]."\n";
-                $str.=$argComment;
-                $str.="\t *\n";
-                $str.="\tpublic function ".$a_["name"]."(".$argStr.")\n";
-                $str.="\t{\n";
-                $str.="\t\n";
-                $str.="\t}\n";
             }
+
+            if($opt["table"]){
+
+                $str.="\tpublic \$table = '".$opt["table"]."';\n";
+                $str.="\n";
+            }
+
+
+            if(!empty($opt["timeStamp"])){
+
+                $str.="\t/**\n";
+                $str.="\t * timeStamp\n";
+                $str.="\t*/\n";
+                $str.="\tpublic \$timeStamp = [\n";
+                $str.="\t\t'created' => [\n";
+                $str.="\t\t\t'field' => '".$opt["timeStamp"]["created"]."',\n";
+                $str.="\t\t],\n";
+                $str.="\t\t'updated' => [\n";
+                $str.="\t\t\t'field' => '".$opt["timeStamp"]["updated"]."',\n";
+                $str.="\t\t],\n";
+                $str.="\t];\n";
+                $str.="\n";
+
+            }
+
+            if(!empty($opt["logicalDelete"])){
+                $str.="\t/**\n";
+                $str.="\t * logicalDelete\n";
+                $str.="\t*/\n";
+                $str.="\tpublic \$logicalDelete = [\n";
+                $str.="\t\t'field' => '".$opt["logicalDelete"]."',\n";
+                $str.="\t];\n";
+                $str.="\n";
+
+            }
+
+
         }
-        */
 
         $str.="\n";
         $str.="}";
 
-        $fileName=MK2_ROOT."/".MK2_DEFNS_TABLE."/".ucfirst($data["name"])."Rable.php";
+        $fileName=MK2_ROOT."/".MK2_DEFNS_TABLE."/".ucfirst($data["name"])."Table.php";
         $fileName=str_replace("\\","/",$fileName);
+
+        if(file_exists($fileName)){
+            $juge=strtolower($this->input("\tThe same Table already exists, do you want to overwrite it as it is?[y/n]"));
+            if($juge!="y"){ $juge="n"; }
+
+            if($juge=="n"){
+                return false;
+            }
+        }
+
         file_put_contents($fileName,$str);
+
+        return true;
     }
 }
