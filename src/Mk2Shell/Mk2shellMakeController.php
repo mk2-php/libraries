@@ -50,7 +50,7 @@ class Mk2shellMakeController extends Command{
 
                 $buff["aregment"]=$name=$this->input("\t\t- If there is an argument name, enter it with.(\",\" Separation)");
                 
-                $juge=strtolower($this->input("\t\t\- Do you want to continue adding actions?[Y/n]"));
+                $juge=strtolower($this->input("\t\t- Do you want to continue adding actions?[Y/n]"));
                 if($juge!="y"){ $juge="n"; }
     
                 $input["actions"][]=$buff;
@@ -94,6 +94,8 @@ class Mk2shellMakeController extends Command{
                 $this->yellow("\t\t: Since one of Model, Backpack, UI is specified, handleBefore is installed.");
                 $buff["onHandleBefore"]="y";
             }
+
+            $buff["comment"]=$this->input("\t\t- Enter any comment text.");
 
         }
 
@@ -142,6 +144,9 @@ class Mk2shellMakeController extends Command{
         $str.=" * PHP Fraemwork - Mark2 \n";
         $str.=" * ".ucfirst($data["name"]). "Controller \n";
         $str.=" * \n";
+        if(!empty($data["option"]["comment"])){
+            $str.=" * ".$data["option"]["comment"]."\n";
+        }
         $str.=" * created : ".date("Y/m/d")."\n";
         $str.=" * \n";
         $str.=" * ============================================\n";
@@ -171,7 +176,7 @@ class Mk2shellMakeController extends Command{
                 $str.="\tpublic \$autoRender = true;\n\n";
             }
 
-            if($opt["onHandleBefore"]){
+            if($opt["onHandleBefore"]=="y"){
                 $str.="\t/**\n";
                 $str.="\t * handleBefore\n";
                 $str.="\t */\n";
@@ -215,7 +220,7 @@ class Mk2shellMakeController extends Command{
                 $str.="\t}\n\n";
             }
 
-            if($opt["onHandleAfter"]){
+            if($opt["onHandleAfter"]=="y"){
                 $str.="\t/**\n";
                 $str.="\t * handleAfter\n";
                 $str.="\t * @param \$input \n";                

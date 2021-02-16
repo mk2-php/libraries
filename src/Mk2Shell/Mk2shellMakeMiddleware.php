@@ -36,6 +36,8 @@ class Mk2shellMakeMiddleware extends Command{
         if($juge!="y"){ $juge="n"; }
         $input["onHandleAfter"]=$juge;
 
+        $input["comment"]=$this->input("\t\t- Enter any comment text.");
+
         $this->text("\t===========================================================================");
 
         $this->text("");
@@ -79,6 +81,9 @@ class Mk2shellMakeMiddleware extends Command{
         $str.=" * PHP Fraemwork - Mark2 \n";
         $str.=" * ".ucfirst($data["name"]). "Middleware \n";
         $str.=" * \n";
+        if(!empty($data["comment"])){
+            $str.=" * ".$data["comment"]."\n";
+        }
         $str.=" * created : ".date("Y/m/d")."\n";
         $str.=" * \n";
         $str.=" * ============================================\n";
@@ -94,7 +99,7 @@ class Mk2shellMakeMiddleware extends Command{
         $str.="{\n";
         $str.="\n";
 
-        if($data["onHandleBefore"]){
+        if($data["onHandleBefore"]=="y"){
             $str.="\t/**\n";
             $str.="\t * handleBefore\n";
             $str.="\t */\n";
@@ -104,7 +109,7 @@ class Mk2shellMakeMiddleware extends Command{
             $str.="\t}\n\n";
         }
 
-        if($data["onHandleAfter"]){
+        if($data["onHandleAfter"]=="y"){
             $str.="\t/**\n";
             $str.="\t * handleAfter\n";
             $str.="\t * @param \$input \n";                

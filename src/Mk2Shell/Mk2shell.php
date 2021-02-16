@@ -46,8 +46,14 @@ class Mk2shell{
                 require_once "Mk2shellMakeUI.php";
                 new Mk2shellMakeUI($argv);
             }
-
-
+            else if($type=="render"){
+                require_once "Mk2shellMakeRender.php";
+                new Mk2shellMakeRender($argv);
+            }
+            else if($type=="shell"){
+                require_once "Mk2shellMakeShell.php";
+                new Mk2shellMakeShell($argv);
+            }
 
         }
 

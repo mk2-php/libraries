@@ -27,41 +27,7 @@ class Mk2shellMakeTable extends Command{
         }
 
         $input["extends"]=$this->input("\t- If there is an inheritance source Table name, enter it.");
-/*
-        $juge=strtolower($this->input("\t- Do you want to add an public method?[Y/n]"));
-        if($juge!="y"){ $juge="n"; }
 
-        $input["methods"]=[];
-        if($juge=="y"){
-
-            $looped=false;
-            for(;;){
-    
-                $buff=[];
-
-                for(;;){
-                    $name=$this->input("\t\t- Please enter the method name.");
-                    if($name){
-                        $buff["name"]=$name;
-                        break;
-                    }
-                    $this->red("\t\t  [ERROR] The method name has not been entered.");
-                }
-
-                $buff["aregment"]=$name=$this->input("\t\t- If there is an argument name, enter it with.(\",\" Separation)");
-                
-                $juge=strtolower($this->input("\t\t\- Do you want to continue adding method?[Y/n]"));
-                if($juge!="y"){ $juge="n"; }
-    
-                $input["methods"][]=$buff;
-
-                if($juge=="n"){
-                    break;
-                }
-            
-            }
-        }
-*/
         $juge=strtolower($this->input("\t- Do you want to set options?[Y/n]"));
         if($juge!="y"){ $juge="n"; }
 
@@ -119,6 +85,9 @@ class Mk2shellMakeTable extends Command{
 
             }
 
+
+            $buff["comment"]=$this->input("\t\t- Enter any comment text.");
+
         }
 
         $input["option"]=$buff;
@@ -166,6 +135,9 @@ class Mk2shellMakeTable extends Command{
         $str.=" * PHP Fraemwork - Mark2 \n";
         $str.=" * ".ucfirst($data["name"]). "Table \n";
         $str.=" * \n";
+        if(!empty($data["option"]["comment"])){
+            $str.=" * ".$data["option"]["comment"]."\n";
+        }
         $str.=" * created : ".date("Y/m/d")."\n";
         $str.=" * \n";
         $str.=" * ============================================\n";

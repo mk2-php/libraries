@@ -2,14 +2,13 @@
 
 namespace Mk2\Libraries;
 
-class Mk2shellMakeModel extends Command{
-
+class Mk2shellMakeBackpack extends Command{
 
     public function __construct($argv){
 
         $input=[];
 
-        $this->green("Create a new Model file.");
+        $this->green("Create a new Backpack file.");
         $this->text("");
 
         if(!empty($argv[0])){
@@ -18,17 +17,18 @@ class Mk2shellMakeModel extends Command{
         else{
             $buff="";
             for(;;){
-                $buff=$this->input("\t- Enter the name of the Model to create.");
+                $buff=$this->input("\t- Enter the name of the Backpack to create.");
                 if($buff){
                     break;
                 }
-                $this->red("\t  [ERROR] The Model name has not been entered.");
+                $this->red("\t  [ERROR] The Backpack name has not been entered.");
             }
             $input["name"]=$buff;
         }
 
-        $input["extends"]=$this->input("\t- If there is an inheritance source Model name, enter it.");
+        $input["extends"]=$this->input("\t- If there is an inheritance source Backpack name, enter it.");
 
+        
         $juge=strtolower($this->input("\t- Do you want to add an public method?[Y/n]"));
         if($juge!="y"){ $juge="n"; }
 
@@ -51,7 +51,7 @@ class Mk2shellMakeModel extends Command{
 
                 $buff["aregment"]=$name=$this->input("\t\t- If there is an argument name, enter it with.(\",\" Separation)");
                 
-                $juge=strtolower($this->input("\t\t- Do you want to continue adding method?[Y/n]"));
+                $juge=strtolower($this->input("\t\t- Do you want to continue adding methods?[Y/n]"));
                 if($juge!="y"){ $juge="n"; }
     
                 $input["methods"][]=$buff;
@@ -74,10 +74,6 @@ class Mk2shellMakeModel extends Command{
             if($juge!="y"){ $juge="n"; }
             $buff["onHandleBefore"]=$juge;
 
-            $juge=$this->input("\t\t- Do you want to set up a handleAfter?[y/n]");
-            if($juge!="y"){ $juge="n"; }
-            $buff["onHandleAfter"]=$juge;
-
             $buff["loadModel"]=$this->input("\t\t- If there is a model to be used in common, please enter it.(\",\" Separation).");
             $buff["loadBackpack"]=$this->input("\t\t- If there is a Backpack to be used in common, please enter it.(\",\" Separation).");
             $buff["loadUI"]=$this->input("\t\t- If there is a UI to be used in common, please enter it.(\",\" Separation).");
@@ -99,13 +95,14 @@ class Mk2shellMakeModel extends Command{
 
         $this->text("\t===========================================================================");
 
+
         $this->text("");
-        $juge=strtolower($this->input("\t- Create a Model file based on the entered information. Is it OK?[Y/n]"));
+        $juge=strtolower($this->input("\t- Create a Backpack file based on the entered information. Is it OK?[Y/n]"));
         
         if($juge=="n"){
             $this->text("");
             $this->text("");
-            $this->text("Model creation has been canceled,");
+            $this->text("Backpack creation has been canceled,");
             return;
         }
 
@@ -114,21 +111,18 @@ class Mk2shellMakeModel extends Command{
         if(!$juge){
             $this->text("");
             $this->text("");
-            $this->text("Model creation has been canceled,");
+            $this->text("Backpack creation has been canceled,");
             return;
         }
 
         $this->text("");
         $this->text("");
-        $this->green("Model creation completed.");
+        $this->green("Backpack creation completed.");
         
     }
 
-    /**
-     * _make
-     * @param $data
-     */
     private function _make($data){
+
 
         $str="";
 
@@ -138,7 +132,7 @@ class Mk2shellMakeModel extends Command{
         $str.=" * ============================================\n";
         $str.=" * \n";
         $str.=" * PHP Fraemwork - Mark2 \n";
-        $str.=" * ".ucfirst($data["name"]). "Model \n";
+        $str.=" * ".ucfirst($data["name"]). "Backpack \n";
         $str.=" * \n";
         if(!empty($data["option"]["comment"])){
             $str.=" * ".$data["option"]["comment"]."\n";
@@ -147,14 +141,14 @@ class Mk2shellMakeModel extends Command{
         $str.=" * \n";
         $str.=" * ============================================\n";
         $str.=" */ \n";
-        $str.="namespace App\Model;\n";
+        $str.="namespace App\Backpack;\n";
         $str.="\n";
         if(!$data["extends"]){
-            $str.="use Mk2\Libraries\Model;\n";
+            $str.="use Mk2\Libraries\Backpack;\n";
             $data["extends"]="";
             $str.="\n";
         }
-        $str.="class ".ucfirst($data["name"])."Model extends ".ucfirst($data["extends"])."Model\n";
+        $str.="class ".ucfirst($data["name"])."Backpack extends ".ucfirst($data["extends"])."Backpack\n";
         $str.="{\n";
         
         if($data["option"]){
@@ -201,19 +195,6 @@ class Mk2shellMakeModel extends Command{
                     $str.="\t\t]);\n\n";
                 }
 
-
-
-                $str.="\t}\n\n";
-            }
-
-            if($opt["onHandleAfter"]=="y"){
-                $str.="\t/**\n";
-                $str.="\t * handleAfter\n";
-                $str.="\t * @param \$input \n";
-                $str.="\t */\n";
-                $str.="\tpublic function handleAfter(\$input)\n";
-                $str.="\t{\n";
-                $str.="\n";
                 $str.="\t}\n\n";
             }
 
@@ -251,11 +232,11 @@ class Mk2shellMakeModel extends Command{
         $str.="\n";
         $str.="}";
 
-        $fileName=MK2_ROOT."/".MK2_DEFNS_MODEL."/".ucfirst($data["name"])."Model.php";
+        $fileName=MK2_ROOT."/".MK2_DEFNS_BACKPACK."/".ucfirst($data["name"])."Backpack.php";
         $fileName=str_replace("\\","/",$fileName);
 
         if(file_exists($fileName)){
-            $juge=strtolower($this->input("\tThe same Model already exists, do you want to overwrite it as it is?[y/n]"));
+            $juge=strtolower($this->input("\tThe same Backpack already exists, do you want to overwrite it as it is?[y/n]"));
             if($juge!="y"){ $juge="n"; }
 
             if($juge=="n"){
@@ -266,5 +247,6 @@ class Mk2shellMakeModel extends Command{
         file_put_contents($fileName,$str);
 
         return true;
+
     }
 }
