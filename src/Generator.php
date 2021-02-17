@@ -405,7 +405,7 @@ class Generator{
 		}
 
 		if(method_exists($shell,"handleBefore")){
-			echo $shell->handleBefore();
+			$shell->beforeResponse = $shell->handleBefore();
 		}
 
 		if($this->routeParam["request"]){
@@ -415,10 +415,8 @@ class Generator{
 			$output=$shell->{$action}();
 		}
 
-		echo $output;
-
 		if(method_exists($shell,"handleAfter")){
-			echo $shell->handleAfter();
+			$shell->handleAfter($output);
 		}
 	}
 
@@ -455,13 +453,13 @@ class Generator{
 			$shell=new $shellName();
 
 			if(method_exists($shell,"handleBefore")){
-				echo $shell->handleBefore($exception);
+				$shell->beforeResponse = $shell->handleBefore($exception);
 			}
 
-			echo $shell->{$errorRoute["action"]}($exception);
+			$output = $shell->{$errorRoute["action"]}($exception);
 
 			if(method_exists($shell,"handleAfter")){
-				echo $shell->handleAfter($exception);
+				$shell->handleAfter($output,$exception);
 			}
 
 		}catch(\Exception $e){
@@ -496,6 +494,7 @@ class Generator{
 			}
 
 			$controllerName=ucfirst(MK2_DEFNS_CONTROLLER)."\\".ucfirst($errorRoute["controller"])."Controller";
+
 			if(!class_exists($controllerName)){
 				throw new \Exception('Missing "'.$controllerName.'" class not found.');
 			}
@@ -503,12 +502,10 @@ class Generator{
 			$controller=new $controllerName();
 
 			if(method_exists($controller,"handleBefore")){
-				echo $controller->handleBefore($exception);
+				$controller->beforeResponse = $controller->handleBefore($exception);
 			}
 
 			$output=$controller->{$errorRoute["action"]}($exception);
-
-			echo $output;
 			
 			RequestRouting::$_params=$errorRoute;
 
@@ -517,7 +514,7 @@ class Generator{
 			}
 
 			if(method_exists($controller,"handleAfter")){
-				echo $controller->handleAfter($exception);
+				$controller->handleAfter($output,$exception);
 			}
 
 		}catch(\Exception $e){
