@@ -54,9 +54,29 @@ class Mk2shell{
                 require_once "Mk2shellMakeShell.php";
                 new Mk2shellMakeShell($argv);
             }
+        }
+        else if($main=="add"){
+
+            array_shift($argv);
+            $type=$argv[0];
+            array_shift($argv);
+
+            if($type=="routing"){
+                require_once "Mk2shellAddRouting.php";
+                new Mk2shellAddRouting($argv);
+            }
+            else if($type=="ddatabase"){
+                require_once "Mk2shellAddDatabase.php";
+                new Mk2shellAddDatabase($argv);
+            }
 
         }
+        else if($main=="config"){
 
+            array_shift($argv);
+
+            require_once "Mk2shellConfig.php";
+            new Mk2shellConfig($argv);
+        }
     }
-
 }
