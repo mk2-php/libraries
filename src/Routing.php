@@ -299,6 +299,9 @@ class Routing{
 
 		if($output){
 			$output=$this->convertResponse($type,$output,$confirmPassParams);
+			if(!$output){
+				return;
+			}
 			$output=array_merge($output,$rootParams);
 			return $output;	
 		}
@@ -413,6 +416,10 @@ class Routing{
 			if(!empty($result[0])){
 				$result=$result[0];
 			}
+		}
+
+		if(is_array($result)){
+			return null;
 		}
 
 		$result=explode("@",$result);
