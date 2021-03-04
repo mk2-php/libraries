@@ -125,7 +125,7 @@ class ExpandClass{
 		$className2="\\".$namespace."\\".$className.$this->_classType;
 
 		if(class_exists($className2)){
-			return true;
+			return $className2;
 		}
 		
 		$className2=str_replace("{className}",strtolower($className),$this->extendNamespace).$className.$this->_classType;
