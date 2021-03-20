@@ -1,11 +1,16 @@
 <?php
 
 /**
- * MARK2
+ * ===================================================
  * 
- * Routing Class
+ * [Mark2] - Routing
  * 
- * @copylight : Nakajima Satoru
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
  */
 
 namespace Mk2\Libraries;
@@ -347,6 +352,14 @@ class Routing{
 		return $rootParams;
 	}
 
+	/**
+	 * getRouteErrorClass
+	 * @param $type
+	 * @param $defaultRootParam
+	 * @param $exception
+	 * @param $rootParams
+	 * @param $routingList
+	 */
 	private function getRouteErrorClass($type, $defaultRootParam, $exception, $rootParams, $routingList){
 
 		$errorExceptionName=get_class($exception);
@@ -406,7 +419,13 @@ class Routing{
 		}
 
 	}
-	
+
+	/**
+	 * convertResponse
+	 * @param $type
+	 * @param $result
+	 * @param $passParams = null
+	 */
 	private function convertResponse($type,$result,$passParams=null){
 
 		if(is_array($result)){

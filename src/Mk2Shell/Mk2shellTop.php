@@ -1,9 +1,25 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - Mk2shellTop
+ * 
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Mk2shellTop extends Command{
 
+    /**
+     * __construct
+     */
     public function __construct(){
 
         $this->cyan("===============================================");

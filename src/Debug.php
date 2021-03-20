@@ -1,9 +1,26 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - CoreBlock
+ * 
+ * Element class base object class.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Debug{
 
+	/**
+	 * out
+	 * @param $value
+	 */
 	public static function out($value){
 		$trace=debug_backtrace();
 		$firstTrace=$trace[0];
@@ -12,16 +29,6 @@ class Debug{
 		echo "<strong>Debug:".$firstTrace["file"]."(".$firstTrace["line"].")</strong><br>";
 		print_r($value);
 		echo "</pre>";
-
-	}
-
-	public static function logWrite($name,$value){
-
-
-	}
-	
-	public static function logRead($name){
-
 
 	}
 

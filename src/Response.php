@@ -1,11 +1,16 @@
 <?php
 
 /**
- * MARK2
+ * ===================================================
  * 
- * Response Class
+ * [Mark2] - ResponseData
  * 
- * @copylight : Nakajima Satoru
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
  */
 
 namespace Mk2\Libraries;
@@ -16,6 +21,10 @@ class ResponseData{
 
 	private static $_data=[];
 
+	/**
+	 * get
+	 * @param $name = null
+	 */
 	public static function get($name=null){
 
 		if($name){
@@ -29,6 +38,11 @@ class ResponseData{
 
 	}
 
+	/**
+	 * set
+	 * @param $name
+	 * @param $value
+	 */
 	public static function set($name,$value){
 		self::$_data[$name]=$value;
 	}
@@ -40,6 +54,10 @@ class Response{
 	private const TEMPLATEENGINE_SMARTY="smarty";
 	private const TEMPLATEENGINE_TWIG="twig";
 
+	/**
+	 * __construct
+	 * @param &$context
+	 */
 	public function __construct(&$context){
 		$this->context=$context;
 	}
@@ -259,6 +277,11 @@ class Response{
 		return $this->require($viewPartPath,$outputBufferd);
 	}
 
+	/**
+	 * require
+	 * @param string $path
+	 * @param boolean $outputBufferd
+	 */
 	private function require($path,$outputBufferd){
 
 		if($outputBufferd){
@@ -275,15 +298,5 @@ class Response{
 		}
 
 	}
-
-	private function requireEngineSmarty($path,$outputBufferd){
-
-	}
-
-	private function requireEngineTwig($path,$outputBufferd){
-
-	}
-
-
 
 }

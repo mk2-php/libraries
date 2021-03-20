@@ -1,10 +1,26 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - Mk2shellMakeModel
+ * 
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Mk2shellMakeModel extends Command{
 
-
+    /**
+     * __construct
+     * @param $argv
+     */
     public function __construct($argv){
 
         $input=[];

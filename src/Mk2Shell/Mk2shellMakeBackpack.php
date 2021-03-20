@@ -1,9 +1,26 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - Mk2shellMakeBackpack
+ * 
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Mk2shellMakeBackpack extends Command{
 
+    /**
+     * __consturct
+     * @param $argv
+     */
     public function __construct($argv){
 
         $input=[];
@@ -120,7 +137,11 @@ class Mk2shellMakeBackpack extends Command{
         $this->green("Backpack creation completed.");
         
     }
-
+    
+    /**
+     * _make
+     * @param $data
+     */
     private function _make($data){
 
 

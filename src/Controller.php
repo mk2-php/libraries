@@ -60,7 +60,15 @@ class Controller extends CoreBlock{
 		}
 	}
 
+	/**
+	 * handleBefore
+	 */
 	public function handleBefore(){}
+
+	/**
+	 * handleAfter
+	 * @param $output
+	 */	
 	public function handleAfter($output){}
 	
 }

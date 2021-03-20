@@ -1,9 +1,26 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - Render
+ * 
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Render extends CoreBlock{
 
+	/**
+	 * render
+	 * @param &$context
+	 */
 	public function render(&$context){
 
 		$this->view=$context->view;

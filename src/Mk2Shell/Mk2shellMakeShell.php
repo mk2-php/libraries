@@ -1,9 +1,26 @@
 <?php
 
+/**
+ * ===================================================
+ * 
+ * [Mark2] - Mk2shellMakeShell
+ * 
+ * Object class for initial operation.
+ * 
+ * URL : https://www/mk2-php.com/
+ * Copylight : Nakajima-Satoru 2021.
+ * 
+ * ===================================================
+ */
+
 namespace Mk2\Libraries;
 
 class Mk2shellMakeShell extends Command{
 
+    /**
+     * __construct
+     * @param $argv
+    */
     public function __construct($argv){
 
         $input=[];
@@ -122,7 +139,6 @@ class Mk2shellMakeShell extends Command{
         $this->green("Shell creation completed.");
        
     }
-
     
     /**
      * _make
