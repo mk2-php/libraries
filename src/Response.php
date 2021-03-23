@@ -222,6 +222,13 @@ class Response{
 			$params=RequestRouting::$_params;
 			if(!empty($this->context->view)){
 				$viewName=ucfirst($params["controller"])."/".$this->context->view;
+
+				// module connected viewname....
+				if(!empty($params["module"])){
+					$controllerName = str_replace("Modules\\".$params["module"]."\App\Controller\\","",$params["controller"]);
+					$viewName = MK2_ROOT."/modules/".$params["module"]."/rendering/View/".$controllerName."/".$params["action"];
+					$direct =true;
+				}
 			}
 			else{
 				$viewName=ucfirst($params["controller"])."/".$params["action"];
@@ -231,6 +238,11 @@ class Response{
 		$viewName=str_replace("\\","/",$viewName);
 
 		$viewPath=MK2_PATH_RENDERING_VIEW."/".$viewName.MK2_VIEW_EXTENSION;
+
+		// module connected viewpath....
+		if(!empty($direct)){
+			$viewPath=$viewName.MK2_VIEW_EXTENSION;
+		}
 
 		if(!file_exists($viewPath)){
 			echo "[ViewError] View file not found. \n Path : '".$viewPath."'\n";
@@ -257,6 +269,13 @@ class Response{
 	public function loadViewPart($viewPartName,$outputBufferd=false){
 
 		$viewPartPath=MK2_PATH_RENDERING_VIEWPART."/".$viewPartName.MK2_VIEW_EXTENSION;
+		
+		$params=RequestRouting::$_params;
+
+		// module connected viewPartPath....
+		if(!empty($params["module"])){
+			$viewPartPath = MK2_ROOT."/modules/".$params["module"]."/rendering/ViewPart/".$viewPartName.MK2_VIEW_EXTENSION;
+		}
 
 		$viewPartPath=str_replace("\\","/",$viewPartPath);
 

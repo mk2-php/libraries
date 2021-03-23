@@ -94,6 +94,7 @@ class Routing{
 
 		if(!empty($routings["scope"])){
 			$routings["release"]=$this->convertRoutingPageScope($routings["release"]);
+			$routings["release"]=$this->convertRoutingModules($routings["release"]);
 		}
 
 		return $routings;
@@ -121,6 +122,46 @@ class Routing{
 			}
 		}
 		return $buffer;
+	}
+
+	/**
+	* convertRoutingModules
+	* @param Array $pages
+	*/
+	private function convertRoutingModules($pages){
+
+		foreach($pages as $url=>$rp_){
+
+			if(empty($rp_["module"])){
+				continue;
+			}
+
+			$moduleName=$rp_["module"];
+
+			$mNameSpace="\Modules\\".ucfirst($moduleName)."\App\Controller\\";
+
+			$routingFilePath=MK2_ROOT."/modules/".ucfirst($moduleName)."/routing/pages.php";
+
+			if(!file_exists($routingFilePath)){
+				continue;
+			}
+
+			$getRouting=require($routingFilePath);
+
+			foreach($getRouting["release"] as $url2nd=>$gr_){
+				if(is_string($gr_)){
+					$gr_=$mNameSpace.ucfirst($gr_);
+				}
+				else{
+					// Waiting for response.....
+				}
+				$pages[$url.$url2nd]=$gr_;
+			}
+
+			unset($pages[$url]);
+		}
+
+		return $pages;
 	}
 
 	/**
@@ -304,6 +345,7 @@ class Routing{
 
 		if($output){
 			$output=$this->convertResponse($type,$output,$confirmPassParams);
+
 			if(!$output){
 				return;
 			}
@@ -460,6 +502,12 @@ class Routing{
 			$output["middleware"]=$middleware;
 		}
 		
+		if(strpos($result[0],"\Modules")>-1){
+			// get module name
+			$moduleName=explode('\\',$result[0]);
+			$output["module"]=$moduleName[2];
+		}
+
 		return $output;
 	}
 
