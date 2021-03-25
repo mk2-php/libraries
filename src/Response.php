@@ -90,6 +90,9 @@ class Response{
 				return $urls;
 			}
 			else if($urls[0]=="@"){
+				if(!RequestRouting::$_params["phpSelf"]){
+					return "/";
+				}
 				return RequestRouting::$_params["phpSelf"];
 			}
 			else{
