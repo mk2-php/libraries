@@ -22,7 +22,7 @@ defineCheck('MK2_PATH_RENDERING_TEMPLATE',MK2_PATH_RENDERING."/Template");
 defineCheck('MK2_PATH_RENDERING_VIEWPART',MK2_PATH_RENDERING."/ViewPart");
 defineCheck('MK2_DEFNS','app');
 defineCheck('MK2_DEFNS_CONTROLLER','app\Controller');
-defineCheck('MK2_DEFNS_BACKPACK','app\BackPack');
+defineCheck('MK2_DEFNS_BACKPACK','app\Backpack');
 defineCheck('MK2_DEFNS_UI','app\UI');
 defineCheck('MK2_DEFNS_MODEL','app\Model');
 defineCheck('MK2_DEFNS_TABLE','app\Table');
