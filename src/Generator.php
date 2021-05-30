@@ -68,14 +68,14 @@ class Generator{
 	 */
 	private function loadKernelV1(){
 
-		require "construct.php";
-		require "Hash.php";
-		require "Debug.php";
-		require "Config.php";
-		require "CoreBlock.php";
-		require "Routing.php";
-		require "RequestRouting.php";
-		require "ExpandClass.php";
+		require_once "construct.php";
+		require_once "Hash.php";
+		require_once "Debug.php";
+		require_once "Config.php";
+		require_once "CoreBlock.php";
+		require_once "Routing.php";
+		require_once "RequestRouting.php";
+		require_once "ExpandClass.php";
 
 	}
 	
@@ -85,10 +85,10 @@ class Generator{
 	private function loadKernelV2(){
 
 		if(Config::exists("config.coreBlock.useRequest")){
-			require "Request.php";
+			require_once "Request.php";
 		}
 		if(Config::exists("config.coreBlock.useResponse")){
-			require "Response.php";
+			require_once "Response.php";
 		}
 
 	}
@@ -145,8 +145,8 @@ class Generator{
 
 		$useClass=Config::get("config.useClass");
 		foreach($useClass as $c_){
-			if(file_exists($c_.".php")){
-				require $c_.".php";
+			if(file_exists(__DIR__."/".$c_.".php")){
+				require_once $c_.".php";
 			}
 		}
 
@@ -181,7 +181,7 @@ class Generator{
 		$mainCommands=explode(":",$argv[0]);
 		$mainCommand=$mainCommands[0];
 		if($mainCommand!="command"){
-			require "Mk2Shell/Mk2shell.php";
+			require_once "Mk2Shell/Mk2shell.php";
 			new Mk2shell($argv);
 			exit;
 		}
