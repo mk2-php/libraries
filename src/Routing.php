@@ -87,10 +87,13 @@ class Routing{
 	/**
 	* convertRouting
 	* @param string $type
+	* @param $routings
 	*/
-	private function convertRouting($type){
+	private function convertRouting($type, $routings = null){
 
-		$routings=Config::get("config.routing.".$type);
+		if(!$routings){
+			$routings=Config::get("config.routing.".$type);
+		}
 
 		if(!empty($routings["scope"])){
 			$routings["release"]=$this->convertRoutingPageScope($routings["release"]);
@@ -149,6 +152,8 @@ class Routing{
 			}
 
 			$getRouting=require($routingFilePath);
+
+			$getRouting = $this->convertRouting(self::TYPE_PAGES,$getRouting);
 
 			foreach($getRouting["release"] as $url2nd=>$gr_){
 				if(is_string($gr_)){
