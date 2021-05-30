@@ -140,6 +140,8 @@ class Routing{
 
 			$mNameSpace="\Modules\\".ucfirst($moduleName)."\App\Controller\\";
 
+			$moduleName=str_replace("\\","/",$moduleName);
+
 			$routingFilePath=MK2_ROOT."/modules/".ucfirst($moduleName)."/routing/pages.php";
 
 			if(!file_exists($routingFilePath)){
@@ -170,6 +172,11 @@ class Routing{
 	private function getRoute(){
 
 		$phpself=dirname($_SERVER["PHP_SELF"]);
+
+		for($n=0;$n<MK2_PATH_LEVEL;$n++){
+			$phpself=dirname($phpself);
+		}
+
 		$requestUrl=$_SERVER["REQUEST_URI"];
 
 		if($phpself=="/"){

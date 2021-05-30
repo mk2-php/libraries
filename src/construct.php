@@ -35,6 +35,7 @@ defineCheck('MK2_PATH_TEMPORARY',MK2_ROOT.'/temporaries');
 defineCheck('MK2_PATH_LOG',MK2_ROOT.'/logs');
 defineCheck('MK2_PATH_PUBLIC',MK2_ROOT.'/public');
 defineCheck('MK2_VIEW_EXTENSION',".view");
+defineCheck('MK2_PATH_LEVEL',0);
 
 function defineCheck($name,$value){
 
