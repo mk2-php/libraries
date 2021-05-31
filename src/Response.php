@@ -229,7 +229,7 @@ class Response{
 				// module connected viewname....
 				if(!empty($params["module"])){
 					$controllerName = str_replace("Modules\\".$params["module"]."\App\Controller\\","",$params["controller"]);
-					$viewName = MK2_ROOT."/modules/".$params["module"]."/rendering/View/".$controllerName."/".$params["action"];
+					$viewName = MK2_ROOT."/modules/".$params["module"]."/rendering/View".$controllerName."/".$params["action"];
 					$direct =true;
 				}
 			}
@@ -277,7 +277,10 @@ class Response{
 
 		// module connected viewPartPath....
 		if(!empty($params["module"])){
-			$viewPartPath = MK2_ROOT."/modules/".$params["module"]."/rendering/ViewPart/".$viewPartName.MK2_VIEW_EXTENSION;
+			$pathOnMOdule = MK2_ROOT."/modules/".$params["module"]."/rendering/ViewPart/".$viewPartName.MK2_VIEW_EXTENSION;
+			if(file_exists($pathOnMOdule)){
+				$viewPartPath = $pathOnMOdule;
+			}
 		}
 
 		$viewPartPath=str_replace("\\","/",$viewPartPath);
