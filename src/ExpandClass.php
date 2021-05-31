@@ -127,7 +127,15 @@ class ExpandClass{
 
 
 		if(defined("MK2_DEFNS_".strtoupper($this->_classType))){
-			$namespace=constant("MK2_DEFNS_".strtoupper($this->_classType));
+
+			if(!empty($this->_context->Request->params("module"))){
+				$moduleName=$this->_context->Request->params("module");
+				$namespace="Modules\\".$moduleName."\App\\".$this->_classType;	
+			}
+			else{
+				$namespace=constant("MK2_DEFNS_".strtoupper($this->_classType));
+			}
+
 		}
 		else{
 			$namespace=MK2_DEFNS."\\".$this->_classType;

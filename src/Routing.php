@@ -139,6 +139,11 @@ class Routing{
 				continue;
 			}
 
+			$targetScope=null;
+			if(!empty($rp_["targetScope"])){
+				$targetScope = $rp_["targetScope"];
+			}
+
 			$moduleName=$rp_["module"];
 
 			$mNameSpace="\Modules\\".ucfirst($moduleName)."\App\Controller\\";
@@ -151,11 +156,24 @@ class Routing{
 				continue;
 			}
 
-			$getRouting=require($routingFilePath);
+			$getRouting = require($routingFilePath);
 
-			$getRouting = $this->convertRouting(self::TYPE_PAGES,$getRouting);
+			//$getRouting = $this->convertRouting(self::TYPE_PAGES,$getRouting);
 
-			foreach($getRouting["release"] as $url2nd=>$gr_){
+			if($targetScope){
+				if(!empty($getRouting["release"][$targetScope])){
+					$getRouting = $getRouting["release"][$targetScope];
+				}
+				else{
+					$getRouting = $getRouting["release"]["/"];
+				}
+			}
+			else{
+				$getRouting = $getRouting["release"];
+			}
+
+
+			foreach($getRouting as $url2nd=>$gr_){
 				if(is_string($gr_)){
 					$gr_=$mNameSpace.ucfirst($gr_);
 				}
@@ -516,8 +534,10 @@ class Routing{
 		
 		if(strpos($result[0],"\Modules")>-1){
 			// get module name
-			$moduleName=explode('\\',$result[0]);
-			$output["module"]=$moduleName[2];
+			$moduleName=$result[0];
+			$moduleName = explode("\\".ucfirst(str_replace("/","\\",MK2_DEFNS_CONTROLLER)),$moduleName)[0];
+			$moduleName=str_replace('\\Modules\\',"",$moduleName);
+			$output["module"]=$moduleName;
 		}
 
 		return $output;
