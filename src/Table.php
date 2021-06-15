@@ -306,6 +306,23 @@ class Table extends CoreBlock{
 	}
 
 	/**
+	 * revert
+	 * @param array $params
+	 * @param boolean $revertResponsed = false
+	 */
+	public function revert($params=null,$revertResponsed=false){
+
+		if($this->ormType==self::ORMTYPE_ELOQUENT){
+			
+		}
+		else if($this->ormType==self::ORMTYPE_MK2ORM){
+			$this->_ormDataSet();
+			return $this->mk2Orm->revert($params,$revertResponsed);
+		}
+
+	}
+
+	/**
 	 * migration
 	 * @param array $params = null
 	 */
