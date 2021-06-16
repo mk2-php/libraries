@@ -122,8 +122,9 @@ class Table extends CoreBlock{
 	/**
 	 * query
 	 * @param string $sql
+	 * @param array $bindValues = null
 	 */
-	public function query($sql){
+	public function query($sql, $bindValues = null){
 
 		if($this->ormType==self::ORMTYPE_ELOQUENT){
 			if(strpos(strtolower($sql),"select")===0){
@@ -143,9 +144,7 @@ class Table extends CoreBlock{
 			}
 		}
 		else if($this->ormType==self::ORMTYPE_MK2ORM){
-			$this->_ormDataSet();
-			$orm=new OrmBase($this);
-			return $orm->query($orm);
+			return $this->mk2Orm->query($sql, $bindValues);
 		}
 	}
 
