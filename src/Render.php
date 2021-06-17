@@ -33,7 +33,12 @@ class Render extends CoreBlock{
 		}
 		else{
 			if(Config::exists("config.coreBlock.useResponse")){
-				$this->Response->loadView($context->view);
+				if($this->Request->params("action")!=$context->view){
+					$this->Response->loadView($context->view);
+				}
+				else{
+					$this->Response->loadView();
+				}
 			}
 		}
 
