@@ -96,6 +96,19 @@ class Table extends CoreBlock{
 		}
 
 	}
+
+	/**
+	 * setConnection
+	 */
+	public function setConnection($connection){
+		
+		if($this->ormType==self::ORMTYPE_ELOQUENT){
+
+		}
+		else if($this->ormType==self::ORMTYPE_MK2ORM){
+			$this->setMk2Orm($connection);
+		}
+	}
 	
 	/**
 	 * setEloquent
