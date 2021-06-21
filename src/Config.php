@@ -53,9 +53,6 @@ class Config{
 			if(!empty($getData[$n_])){
 				$getData=$getData[$n_];
 			}
-			else if(in_array($n_,$getData)){
-				return true;
-			}
 			else{
 				return null;
 			}

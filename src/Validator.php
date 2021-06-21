@@ -24,6 +24,7 @@ class Validator extends CoreBlock{
      * @param $option = null
      */
     public function __construct($option=null){
+        parent::__construct($option);
         $this->_validator=new \Mk2\Validator\Validator($this);
     }
 

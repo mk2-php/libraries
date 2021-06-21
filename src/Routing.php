@@ -542,6 +542,5 @@ class Routing{
 
 		return $output;
 	}
-
 	
 }
