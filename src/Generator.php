@@ -136,6 +136,17 @@ class Generator{
 
 		Config::set("config",$config);
 		
+		if(!empty($config["requireAfter"])){
+			foreach($config["requireAfter"] as $cr_){
+				if(!file_exists(MK2_PATH_CONFIG."/".$cr_.".php")){
+					continue;
+				}
+				$requireName=pathinfo($cr_,PATHINFO_FILENAME);
+				require(MK2_PATH_CONFIG."/".$cr_.".php");
+			}
+		}
+
+
 	}
 
 	/**

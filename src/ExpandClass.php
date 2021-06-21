@@ -77,6 +77,10 @@ class ExpandClass{
 				else{
 					$namespace=constant("MK2_DEFNS_".strtoupper($this->_classType));
 				}
+
+				if(!class_exists("\\".$namespace."\\".$className.$this->_classType)){
+					$namespace = MK2_DEFNS."\\".$this->_classType;
+				}
 			}
 			else{
 				$namespace=MK2_DEFNS."\\".$this->_classType;
@@ -135,7 +139,10 @@ class ExpandClass{
 			else{
 				$namespace=constant("MK2_DEFNS_".strtoupper($this->_classType));
 			}
-
+			
+			if(!class_exists("\\".$namespace."\\".$className.$this->_classType)){
+				$namespace = MK2_DEFNS."\\".$this->_classType;
+			}
 		}
 		else{
 			$namespace=MK2_DEFNS."\\".$this->_classType;
