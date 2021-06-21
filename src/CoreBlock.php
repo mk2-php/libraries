@@ -23,8 +23,10 @@ class CoreBlock{
 	public function __construct(){
 
 		$useClass=Config::get("config.useClass");
-		foreach($useClass as $c_){
-			$this->{$c_}=new ExpandClass($c_,$this);
+		if($useClass){
+			foreach($useClass as $c_){
+				$this->{$c_}=new ExpandClass($c_,$this);
+			}	
 		}
 		
 		if(Config::exists("config.coreBlock.useRequest")){

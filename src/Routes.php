@@ -18,9 +18,17 @@ namespace Mk2\Libraries;
 class Routes{
 
     private $_data = [];
-    private $_mode="pages";
-    private $_type="release";
-    private $_scope=false;
+    private $_main = null;
+    private $_mode = "pages";
+    private $_type = "release";
+    private $_scope = false;
+
+    public const TYPE_PAGES = "pages";
+    public const TYPE_SHELL = "shell";
+
+    public function __construct($mode = null){
+        $this->_main = $mode;
+    }
 
     /**
      * set
@@ -96,18 +104,38 @@ class Routes{
 
         if($method){
             if($this->_scope){
-                $this->_data[$this->_mode][$this->_type][$this->_scope][$url][$method] = $params;
+                if($this->_main){
+                    $this->_data[$this->_type][$this->_scope][$url][$method] = $params;
+                }
+                else{
+                    $this->_data[$this->_mode][$this->_type][$this->_scope][$url][$method] = $params;
+                }
             }
             else{
-                $this->_data[$this->_mode][$this->_type][$url][$method] = $params;
+                if($this->_main){
+                    $this->_data[$this->_type][$url][$method] = $params;
+                }
+                else{
+                    $this->_data[$this->_mode][$this->_type][$url][$method] = $params;
+                }
             }	
         }
         else{
             if($this->_scope){
-                $this->_data[$this->_mode][$this->_type][$this->_scope][$url] = $params;
+                if($this->_main){
+                    $this->_data[$this->_type][$this->_scope][$url] = $params;
+                }
+                else{
+                    $this->_data[$this->_mode][$this->_type][$this->_scope][$url] = $params;
+                }
             }
             else{
-                $this->_data[$this->_mode][$this->_type][$url] = $params;
+                if($this->_main){
+                    $this->_data[$this->_type][$url] = $params;
+                }
+                else{
+                    $this->_data[$this->_mode][$this->_type][$url] = $params;
+                }
             }	
         }
         return $this;
@@ -163,7 +191,12 @@ class Routes{
     public function scope($name = null){
         if($name){
             if($this->_type=="release"){
-                $this->_data[$this->_mode]["scope"] = true;
+                if($this->_main){
+                    $this->_data["scope"] = true;
+                }
+                else{
+                    $this->_data[$this->_mode]["scope"] = true;
+                }
             }
             else if($this->_type=="error"){
                 $this->_data[$this->_mode]["errorScope"] = true;
