@@ -165,13 +165,14 @@ class Routing{
 					$getRouting = $getRouting["release"][$targetScope];
 				}
 				else{
-					$getRouting = $getRouting["release"]["/"];
+					if(!empty($getRouting["release"]["/"])){
+						$getRouting = $getRouting["release"]["/"];
+					}
 				}
 			}
 			else{
 				$getRouting = $getRouting["release"];
 			}
-
 
 			foreach($getRouting as $url2nd=>$gr_){
 				if(is_string($gr_)){
