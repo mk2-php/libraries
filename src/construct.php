@@ -31,6 +31,7 @@ defineCheck('MK2_DEFNS_RENDER','app\Render');
 defineCheck('MK2_DEFNS_SHELL','app\Shell');
 defineCheck('MK2_DEFNS_MIDDLEWARE','app\Middleware');
 defineCheck('MK2_DEFNS_ELCLASS','app\ElClass');
+defineCheck("MK2_DEFNS_UPDATER","app/Updater");
 defineCheck('MK2_PATH_TEMPORARY',MK2_ROOT.'/temporaries');
 defineCheck('MK2_PATH_LOG',MK2_ROOT.'/logs');
 defineCheck('MK2_PATH_PUBLIC',MK2_ROOT.'/public');
