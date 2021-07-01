@@ -3,12 +3,16 @@
 /**
  * ===================================================
  * 
- * [Mark2] - Controller
+ * PHP Framework "Mk2"
+ * 
+ * Controller
  * 
  * Basic Controller class.
  * 
- * URL : https://www/mk2-php.com/
+ * URL : https://www.mk2-php.com/
+ * 
  * Copylight : Nakajima-Satoru 2021.
+ *           : Sakaguchiya Co. Ltd. (https://www.teastalk.jp/)
  * 
  * ===================================================
  */

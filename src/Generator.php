@@ -3,12 +3,16 @@
 /**
  * ===================================================
  * 
- * [Mark2] - Generator
+ * PHP Framework "Mk2"
+ * 
+ * Generator
  * 
  * Object class for initial operation.
  * 
- * URL : https://www/mk2-php.com/
+ * URL : https://www.mk2-php.com/
+ * 
  * Copylight : Nakajima-Satoru 2021.
+ *           : Sakaguchiya Co. Ltd. (https://www.teastalk.jp/)
  * 
  * ===================================================
  */
@@ -23,6 +27,9 @@ class Generator{
 	private const MODE_CLI="cli";
 	private $middlewares = [];
 
+	/**
+	 * __construct
+	 */
 	public function __construct(){
 
 		try{

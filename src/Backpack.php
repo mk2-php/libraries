@@ -3,12 +3,16 @@
 /**
  * ===================================================
  * 
- * [Mark2] - Backpack
+ * PHP Framework "Mk2"
+ *
+ * Backpack
  * 
  * Backpack class base file.
  * 
- * URL : https://www/mk2-php.com/
+ * URL : https://www.mk2-php.com/
+ * 
  * Copylight : Nakajima-Satoru 2021.
+ *           : Sakaguchiya Co. Ltd. (https://www.teastalk.jp/)
  * 
  * ===================================================
  */
