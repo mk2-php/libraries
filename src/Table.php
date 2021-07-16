@@ -86,6 +86,10 @@ class Table extends CoreBlock{
 		
 		$dbConnection=Config::get("config.database.".$this->dbName);
 
+		if(!empty($dbConnection["prefix"])){
+			$this->prefix = $dbConnection["prefix"];
+		}
+
 		if(empty($dbConnection["orm"])){
 			$dbConnection["orm"]="eloquent";
 		}

@@ -233,9 +233,10 @@ class Response{
 				// module connected viewname....
 				if(!empty($params["module"])){
 					$controllerName = str_replace("Modules\\".$params["module"]."\App\Controller\\","",$params["controller"]);
-					$viewName = MK2_ROOT."/modules/".$params["module"]."/rendering/View".$controllerName."/".$params["action"];
+					$viewName = MK2_ROOT."/modules/".$params["module"]."/rendering/View".$controllerName."/".$this->context->view;
 					$direct =true;
 				}
+
 			}
 			else{
 				$viewName=ucfirst($params["controller"])."/".$params["action"];
