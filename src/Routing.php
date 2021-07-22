@@ -182,6 +182,7 @@ class Routing{
 			}
 
 			if($getRouting){
+				$buff=[];
 				foreach($getRouting as $url2nd=>$gr_){
 					
 					if(is_string($gr_)){
@@ -190,7 +191,15 @@ class Routing{
 					else{
 						// Waiting for response.....
 					}
-					$pages[$url.$url2nd]=$gr_;
+
+					$buff[$url.$url2nd] = $gr_;
+				}
+
+				if($url){
+					$pages=array_merge($pages,$buff);
+				}
+				else{
+					$pages=array_merge($buff,$pages);
 				}
 			}
 
