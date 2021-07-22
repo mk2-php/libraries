@@ -138,7 +138,7 @@ class Routing{
 	private function convertRoutingModules($pages){
 
 		foreach($pages as $url=>$rp_){
-
+			
 			if(empty($rp_["module"])){
 				continue;
 			}
@@ -160,32 +160,38 @@ class Routing{
 				continue;
 			}
 
-			$getRouting = require($routingFilePath);
+			$getRoutingBuff = require($routingFilePath);
 
 			//$getRouting = $this->convertRouting(self::TYPE_PAGES,$getRouting);
 
+			$getRouting = null;
 			if($targetScope){
-				if(!empty($getRouting["release"][$targetScope])){
-					$getRouting = $getRouting["release"][$targetScope];
+				if(!empty($getRoutingBuff["release"][$targetScope])){
+					$getRouting = $getRoutingBuff["release"][$targetScope];
 				}
 				else{
-					if(!empty($getRouting["release"]["/"])){
-						$getRouting = $getRouting["release"]["/"];
+					if($targetScope=="/"){
+						if(!empty($getRoutingBuff["release"]["/"])){
+							$getRouting = $getRoutingBuff["release"]["/"];
+						}	
 					}
 				}
 			}
 			else{
-				$getRouting = $getRouting["release"];
+				$getRouting = $getRoutingBuff["release"];
 			}
 
-			foreach($getRouting as $url2nd=>$gr_){
-				if(is_string($gr_)){
-					$gr_=$mNameSpace.ucfirst($gr_);
+			if($getRouting){
+				foreach($getRouting as $url2nd=>$gr_){
+					
+					if(is_string($gr_)){
+						$gr_=$mNameSpace.ucfirst($gr_);
+					}
+					else{
+						// Waiting for response.....
+					}
+					$pages[$url.$url2nd]=$gr_;
 				}
-				else{
-					// Waiting for response.....
-				}
-				$pages[$url.$url2nd]=$gr_;
 			}
 
 			unset($pages[$url]);
@@ -264,6 +270,7 @@ class Routing{
 		$passParams=[];
 		$matrixA=[];
 		$matrixB=[];
+
 		if(!empty($routingList["release"])){
 			foreach($routingList["release"] as $url=>$route){
 
