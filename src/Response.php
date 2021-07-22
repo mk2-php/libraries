@@ -203,7 +203,13 @@ class Response{
 		
 		$TemplatePath=MK2_PATH_RENDERING_TEMPLATE."/".$templateName.MK2_VIEW_EXTENSION;
 		if(!file_exists($TemplatePath)){
-			throw new Exception("Template file not found. \n Path : '".$TemplatePath."'\n");
+			$templatePath2 = $templateName;
+			if(file_exists($templatePath2)){
+				$TemplatePath = $templatePath2;
+			}
+			else{
+				throw new Exception("Template file not found. \n Path : '".$TemplatePath."' or '".$templatePath2."'\n");
+			}
 		}
 
 		$templateEngine=Config::get("config.templateEngine");
