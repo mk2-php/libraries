@@ -43,6 +43,15 @@ class Controller extends CoreBlock{
 			if(!empty($this->RenderName)){
 				$renderName=$this->RenderName."Render";
 				$renderClassName=MK2_DEFNS_RENDER."\\".$renderName;
+
+				if(!class_exists($renderClassName)){
+					$_r0 = $renderClassName;
+					$renderClassName = $renderName;
+					if(!class_exists($renderClassName)){
+						throw new \Exception("Render Class Not existed. \"".$renderClassName."\" or \"".$_r0."\"");
+					}
+				}
+
 			}
 	
 			$render=new $renderClassName();
