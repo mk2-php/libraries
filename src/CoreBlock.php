@@ -56,12 +56,18 @@ class CoreBlock{
 	/**
 	 * require
 	 * @param $path
+	 * @param $requestData = null
 	 * @return string $path
 	 */
-	public function require($path){
+	public function require($path,$requestData = null){
 
 		$getData= ResponseData::get();
 
+		if($requestData){
+			foreach($requestData as $field=>$value){
+				$$field=$value;
+			}
+		}
 		foreach($getData as $field=>$value){
 			$$field=$value;
 		}

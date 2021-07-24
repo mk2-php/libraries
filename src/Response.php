@@ -279,8 +279,9 @@ class Response{
 	 * loadViewPart
 	 * @param string $viewPartName
 	 * @param boolean $outputBufferd
+	 * @param array $requestData = null
 	 */
-	public function loadViewPart($viewPartName,$outputBufferd=false){
+	public function loadViewPart($viewPartName,$outputBufferd=false,$requestData = null){
 
 		$viewPartPath=MK2_PATH_RENDERING_VIEWPART."/".$viewPartName.MK2_VIEW_EXTENSION;
 		
@@ -300,7 +301,7 @@ class Response{
 			echo "[ViewPartError] ViewPart file not found. \n Path : '".$viewPartPath."'\n";
 			return;
 		}
-		
+
 		$templateEngine=Config::get("config.templateEngine");
 
 		if($templateEngine===self::TEMPLATEENGINE_SMARTY){
@@ -310,21 +311,22 @@ class Response{
 			return  $this->requireEngineTwig($viewPartPath,$outputBufferd);
 		}
 
-		return $this->require($viewPartPath,$outputBufferd);
+		return $this->require($viewPartPath,$outputBufferd,$requestData);
 	}
 
 	/**
 	 * require
 	 * @param string $path
 	 * @param boolean $outputBufferd
+	 * @param $requestData = null
 	 */
-	private function require($path,$outputBufferd){
+	private function require($path,$outputBufferd,$requestData = null){
 
 		if($outputBufferd){
 			ob_start();
 		}
 
-		$this->context->require($path);
+		$this->context->require($path,$requestData);
 
 		if($outputBufferd){
 			$contents=ob_get_contents();
