@@ -312,15 +312,16 @@ class Table extends CoreBlock{
 	 * delete
 	 * @param array $params
 	 * @param boolean $deleteResponsed = false
+	 * @param boolean $directDelete = false
 	 */
-	public function delete($params=null,$deleteResponsed=false){
+	public function delete($params=null,$deleteResponsed=false,$directDelete = false){
 
 		if($this->ormType==self::ORMTYPE_ELOQUENT){
 			
 		}
 		else if($this->ormType==self::ORMTYPE_MK2ORM){
 			$this->_ormDataSet();
-			return $this->mk2Orm->delete($params,$deleteResponsed);
+			return $this->mk2Orm->delete($params,$deleteResponsed,$directDelete);
 		}
 
 	}
