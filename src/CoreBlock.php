@@ -48,9 +48,11 @@ class CoreBlock{
 				require_once "Command.php";
 				$this->Command=new Command($this);
 			}
-
 		}
 
+		if(\method_exists($this,"handleBefore")){
+			$this->handleBefore();
+		}
 	}
 
 	/**

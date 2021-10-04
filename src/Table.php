@@ -91,7 +91,7 @@ class Table extends CoreBlock{
 		}
 
 		if(empty($dbConnection["orm"])){
-			$dbConnection["orm"]="eloquent";
+			$dbConnection["orm"]=self::ORMTYPE_MK2ORM;
 		}
 
 		$this->ormType=$dbConnection["orm"];

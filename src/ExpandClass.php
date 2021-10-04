@@ -115,10 +115,6 @@ class ExpandClass{
 				}
 			}
 
-			if(\method_exists($classObject,"handleBefore")){
-				$classObject->handleBefore();
-			}
-
 			$this->{$name}=$classObject;
 
 		}
@@ -201,10 +197,6 @@ class ExpandClass{
 			}
 		}
 
-		if(\method_exists($classObject,"handleBefore")){
-			$classObject->handleBefore();
-		}
-
 		return $classObject;
 	}
 
@@ -225,10 +217,6 @@ class ExpandClass{
 		$classObject=new $className();
 
 		$classObject->__parent=$this->_context;
-
-		if(\method_exists($classObject,"handleBefore")){
-			$classObject->handleBefore();
-		}
 
 		return $classObject;
 	}
