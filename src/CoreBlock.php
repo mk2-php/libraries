@@ -23,8 +23,15 @@ class CoreBlock{
 
 	/**
 	 * __consturct
+	 * @param $option = null
 	 */
-	public function __construct(){
+	public function __construct($option = null){
+
+		if($option){
+			foreach($option as $field=>$value){
+				$this->{$field}=$value;
+			}
+		}
 
 		$useClass=Config::get("config.useClass");
 		if($useClass){
@@ -51,7 +58,12 @@ class CoreBlock{
 		}
 
 		if(\method_exists($this,"handleBefore")){
-			$this->handleBefore();
+			if(!empty($this->errorException)){
+				$this->handleBefore($this->errorException);
+			}
+			else{
+				$this->handleBefore();
+			}
 		}
 	}
 

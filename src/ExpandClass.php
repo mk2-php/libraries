@@ -105,18 +105,11 @@ class ExpandClass{
 				}
 			}
 
-			$classObject=new $className2();
+			$classObject=new $className2($option);
 
 			$classObject->__parent=$this->_context;
 
-			if($option){
-				foreach($option as $field=>$value){
-					$classObject->{$field}=$value;
-				}
-			}
-
 			$this->{$name}=$classObject;
-
 		}
 
 		return $this;
@@ -187,23 +180,18 @@ class ExpandClass{
 			return;
 		}
 
-		$classObject=new $fullClassName();
+		$classObject=new $fullClassName($option);
 
 		$classObject->__parent=$this->_context;
-
-		if($option){
-			foreach($option as $field=>$value){
-				$classObject->{$field}=$value;
-			}
-		}
 
 		return $classObject;
 	}
 
 	/**
 	 * my
+	 * @param $option = null
 	 */
-	public function my(){
+	public function my($option=null){
 
 		if(class_exists("Mk2\Libraries\\".$this->_classType)){
 			$namespace="Mk2\Libraries";
@@ -214,7 +202,7 @@ class ExpandClass{
 
 		$className=$namespace."\\".$this->_classType;
 
-		$classObject=new $className();
+		$classObject=new $className($option);
 
 		$classObject->__parent=$this->_context;
 

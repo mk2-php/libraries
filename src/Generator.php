@@ -283,10 +283,6 @@ class Generator{
 
 					$mbuff=new $middlewareName;
 
-					if(method_exists($mbuff,"handleBefore")){
-						$mbuff->handleBefore();
-					}
-
 					$this->middlewares[]=$mbuff;
 				}
 			}
@@ -304,12 +300,7 @@ class Generator{
 					$middlewareName=ucfirst(MK2_DEFNS_MIDDLEWARE)."\\".ucfirst($m_)."Middleware";
 				}
 
-				$mbuff=new $middlewareName;
-
-				if(method_exists($mbuff,"handleBefore")){
-					$buffer = $mbuff->handleBefore();
-					$response[$m_]=$buffer;
-				}
+				$mbuff = new $middlewareName;
 
 				$this->middlewares[]=$mbuff;
 			}
@@ -352,9 +343,9 @@ class Generator{
 			throw new \Exception('Missing "'.$controllerName.'" class not found.');
 		}
 
-		$controller=new $controllerName();
-
 		Routings::$_data=$this->routeParam;
+
+		$controller=new $controllerName();
 
 		$action=$this->routeParam["action"];
 
@@ -367,10 +358,6 @@ class Generator{
 		$middlewareResponse = $this->loadMiddlewareBefore();
 		if($middlewareResponse){
 			$controller->middlewareResponse=$middlewareResponse;
-		}
-
-		if(method_exists($controller,"handleBefore")){
-			$controller->beforeResponse = $controller->handleBefore();
 		}
 
 		if(!empty($this->routeParam["request"])){
@@ -423,10 +410,6 @@ class Generator{
 			throw new \Exception('"'.$action.'" action does not exist in "'.$shellName.'" class.');
 		}
 
-		if(method_exists($shell,"handleBefore")){
-			$shell->beforeResponse = $shell->handleBefore();
-		}
-
 		if($this->routeParam["request"]){
 			$output=$shell->{$action}(...$this->routeParam["request"]);
 		}
@@ -469,11 +452,9 @@ class Generator{
 				throw new \Exception('Missing "'.$shellName.'" class not found.');
 			}
 
-			$shell=new $shellName();
-
-			if(method_exists($shell,"handleBefore")){
-				$shell->beforeResponse = $shell->handleBefore($exception);
-			}
+			$shell=new $shellName([
+				"errorException"=>$exception,
+			]);
 
 			$output = $shell->{$errorRoute["action"]}($exception);
 
@@ -517,16 +498,14 @@ class Generator{
 			if(!class_exists($controllerName)){
 				throw new \Exception('Missing "'.$controllerName.'" class not found.');
 			}
-
-			$controller=new $controllerName();
-
-			if(method_exists($controller,"handleBefore")){
-				$controller->beforeResponse = $controller->handleBefore($exception);
-			}
-
-			$output=$controller->{$errorRoute["action"]}($exception);
 			
-			RequestRouting::$_params=$errorRoute;
+			RequestRouting::$_params = $errorRoute;
+
+			$controller = new $controllerName([
+				"errorException"=>$exception,
+			]);
+
+			$output = $controller->{$errorRoute["action"]}($exception);
 
 			if(!empty($controller->autoRender)){
 				$controller->_rendering();
